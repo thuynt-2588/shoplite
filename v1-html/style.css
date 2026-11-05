@@ -431,7 +431,7 @@ h4 {
   display: flex;
   align-items: center;
   gap: 8px;
-  font-size: 13.5px;
+  font-size: 14px;
   font-weight: 500;
   color: var(--text-soft);
 }
@@ -506,7 +506,7 @@ h4 {
    ========================================================================== */
 .product-grid {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
   gap: 24px;
 }
 
@@ -526,6 +526,7 @@ h4 {
 .product-card:hover {
   transform: translateY(-2px);
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+  cursor: pointer;
 }
 
 /* Khung hình ảnh / Thumbnail bo góc bên trong */
@@ -638,46 +639,35 @@ h4 {
 }
 
 .product-card:hover .tag-overlay {
-  opacity: 0;
   transform: translateY(6px);
 }
 
-/* --- NÚT THÊM NHANH (Ẩn dưới đáy, hover trượt lên) --- */
-.quick-add-btn {
-  position: absolute;
-  bottom: 14px;
-  left: 14px;
-  right: 14px;
+/* --- NÚT THÊM VÀO GIỎ (Ẩn dưới đáy, hover trượt lên) --- */
+.btn-add-cart {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   height: 44px;
   background-color: var(--text-main);
   color: var(--surface);
   border: none;
   border-radius: 999px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
   gap: 8px;
-  font-size: 13.5px;
+  font-size: 14px;
   font-weight: 600;
   cursor: pointer;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-  opacity: 0;
   transform: translateY(12px);
   transition:
     opacity 0.25s ease,
     transform 0.25s ease,
     background-color 0.15s ease;
   z-index: 2;
+  margin-top: auto;
 }
 
-/* Kích hoạt khi rê chuột vào card */
-.product-card:hover .quick-add-btn {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-.quick-add-btn:hover {
-  background-color: var(--text-main);
+.btn-add-cart:hover {
+  background-color: var(--accent);
 }
 
 /* Phần thông tin chi tiết dưới sản phẩm */
@@ -685,12 +675,13 @@ h4 {
   padding: 0 8px;
   display: flex;
   flex-direction: column;
+  flex: 1;
 }
 
 .product-cat {
   font-size: 11.5px;
   font-weight: 700;
-  color: var(--text-soft);
+  color: var(--text-muted);
   letter-spacing: 0.5px;
   margin-bottom: 4px;
 }
@@ -743,7 +734,7 @@ h4 {
 
 .current-price {
   font-size: 17px;
-  font-weight: 800;
+  font-weight: 600;
   color: var(--text-main);
   text-decoration: none;
   letter-spacing: -0.2px;
@@ -751,7 +742,7 @@ h4 {
 
 .old-price {
   font-size: 14px;
-  color: var(--text-soft);
+  color: var(--text-muted);
   text-decoration: line-through;
   font-weight: 500;
 }
@@ -842,7 +833,7 @@ h4 {
 }
 
 .footer-col a {
-  font-size: 13.5px;
+  font-size: 14px;
   color: var(--text-muted);
 }
 
@@ -857,4 +848,14 @@ h4 {
   padding-top: 28px;
   font-size: 14px;
   color: var(--text-muted);
+}
+
+/* Mobile */
+@media (max-width: 992px) {
+  .footer-top {
+    grid-template-columns: 1fr 1fr;
+    gap: 26px;
+  }
+}
+@media (max-width: 600px) {
 }

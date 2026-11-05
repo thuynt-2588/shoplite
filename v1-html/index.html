@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="vi">
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -239,6 +239,7 @@
                     stroke-width="2"
                     stroke-linecap="round"
                     stroke-linejoin="round"
+                    aria-hidden="true"
                   >
                     <path
                       d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"
@@ -254,6 +255,7 @@
                   stroke-width="2"
                   stroke-linecap="round"
                   stroke-linejoin="round"
+                  aria-hidden="true"
                 >
                   <path
                     d="M20.38 3.46L16 2a4 4 0 01-8 0L3.62 3.46a2 2 0 00-1.34 2.23l.58 3.47a1 1 0 00.99.84H6v10c0 1.1.9 2 2 2h8a2 2 0 002-2V10h2.15a1 1 0 00.99-.84l.58-3.47a2 2 0 00-1.34-2.23z"
@@ -261,26 +263,6 @@
                 </svg>
 
                 <span class="tag-overlay">ÁO THUN</span>
-
-                <button type="button" class="quick-add-btn">
-                  <svg
-                    width="16"
-                    height="16"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                  >
-                    <circle cx="9" cy="20" r="1"></circle>
-                    <circle cx="19" cy="20" r="1"></circle>
-                    <path
-                      d="M1 1h4l2.6 12.2a2 2 0 0 0 2 1.6h9.8a2 2 0 0 0 2-1.6L23 5H6"
-                    ></path>
-                  </svg>
-                  <span>Thêm nhanh</span>
-                </button>
               </div>
 
               <div class="card-details">
@@ -294,9 +276,30 @@
                   <span class="rating-count">(214)</span>
                 </div>
                 <p class="price-wrap">
-                  <ins class="current-price">290.000₫</ins>
-                  <del class="old-price">350.000₫</del>
+                  <span class="current-price">290.000₫</span>
+                  <span class="old-price">350.000₫</span>
                 </p>
+
+                <button type="button" class="btn-add-cart">
+                  <svg
+                    width="16"
+                    height="16"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    aria-hidden="true"
+                  >
+                    <circle cx="9" cy="20" r="1"></circle>
+                    <circle cx="19" cy="20" r="1"></circle>
+                    <path
+                      d="M1 1h4l2.6 12.2a2 2 0 0 0 2 1.6h9.8a2 2 0 0 0 2-1.6L23 5H6"
+                    ></path>
+                  </svg>
+                  <span>Thêm vào giỏ</span>
+                </button>
               </div>
             </article>
 
@@ -317,6 +320,7 @@
                     stroke-width="2"
                     stroke-linecap="round"
                     stroke-linejoin="round"
+                    aria-hidden="true"
                   >
                     <path
                       d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"
@@ -332,14 +336,31 @@
                   stroke-width="2"
                   stroke-linecap="round"
                   stroke-linejoin="round"
+                  aria-hidden="true"
                 >
                   <path d="M6 9l1.5 12h9L18 9H6z" />
                   <path d="M9 9V6a3 3 0 016 0v3" />
                 </svg>
 
                 <span class="tag-overlay">TÚI TOTE</span>
+              </div>
 
-                <button type="button" class="quick-add-btn">
+              <div class="card-details">
+                <span class="product-cat">PHỤ KIỆN</span>
+                <h3 class="product-title">
+                  <a href="#">Túi tote canvas</a>
+                </h3>
+                <div class="rating-wrap">
+                  <span class="stars">★★★★★</span>
+                  <span class="rating-val">4.5</span>
+                  <span class="rating-count">(198)</span>
+                </div>
+                <p class="price-wrap">
+                  <span class="current-price">280.000₫</span>
+                </p>
+
+                <!-- Nút Thêm vào giỏ nằm ở đáy khối details -->
+                <button type="button" class="btn-add-cart">
                   <svg
                     width="16"
                     height="16"
@@ -349,6 +370,7 @@
                     stroke-width="2"
                     stroke-linecap="round"
                     stroke-linejoin="round"
+                    aria-hidden="true"
                   >
                     <circle cx="9" cy="20" r="1"></circle>
                     <circle cx="19" cy="20" r="1"></circle>
@@ -356,21 +378,8 @@
                       d="M1 1h4l2.6 12.2a2 2 0 0 0 2 1.6h9.8a2 2 0 0 0 2-1.6L23 5H6"
                     ></path>
                   </svg>
-                  <span>Thêm nhanh</span>
+                  <span>Thêm vào giỏ</span>
                 </button>
-              </div>
-
-              <div class="card-details">
-                <span class="product-cat">PHỤ KIỆN</span>
-                <h3 class="product-title"><a href="#">Túi tote canvas</a></h3>
-                <div class="rating-wrap">
-                  <span class="stars">★★★★★</span>
-                  <span class="rating-val">4.5</span>
-                  <span class="rating-count">(198)</span>
-                </div>
-                <p class="price-wrap">
-                  <ins class="current-price">280.000₫</ins>
-                </p>
               </div>
             </article>
 
@@ -391,6 +400,7 @@
                     stroke-width="2"
                     stroke-linecap="round"
                     stroke-linejoin="round"
+                    aria-hidden="true"
                   >
                     <path
                       d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"
@@ -406,6 +416,7 @@
                   stroke-width="2"
                   stroke-linecap="round"
                   stroke-linejoin="round"
+                  aria-hidden="true"
                 >
                   <path
                     d="M20.38 3.46L16 2a4 4 0 01-8 0L3.62 3.46a2 2 0 00-1.34 2.23l.58 3.47a1 1 0 00.99.84H6v10c0 1.1.9 2 2 2h8a2 2 0 002-2V10h2.15a1 1 0 00.99-.84l.58-3.47a2 2 0 00-1.34-2.23z"
@@ -413,26 +424,6 @@
                 </svg>
 
                 <span class="tag-overlay">HOODIE NỈ</span>
-
-                <button type="button" class="quick-add-btn">
-                  <svg
-                    width="16"
-                    height="16"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                  >
-                    <circle cx="9" cy="20" r="1"></circle>
-                    <circle cx="19" cy="20" r="1"></circle>
-                    <path
-                      d="M1 1h4l2.6 12.2a2 2 0 0 0 2 1.6h9.8a2 2 0 0 0 2-1.6L23 5H6"
-                    ></path>
-                  </svg>
-                  <span>Thêm nhanh</span>
-                </button>
               </div>
 
               <div class="card-details">
@@ -446,8 +437,30 @@
                   <span class="rating-count">(203)</span>
                 </div>
                 <p class="price-wrap">
-                  <ins class="current-price">590.000₫</ins>
+                  <span class="current-price">590.000₫</span>
                 </p>
+
+                <!-- Nút Thêm vào giỏ nằm ở đáy khối details -->
+                <button type="button" class="btn-add-cart">
+                  <svg
+                    width="16"
+                    height="16"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    aria-hidden="true"
+                  >
+                    <circle cx="9" cy="20" r="1"></circle>
+                    <circle cx="19" cy="20" r="1"></circle>
+                    <path
+                      d="M1 1h4l2.6 12.2a2 2 0 0 0 2 1.6h9.8a2 2 0 0 0 2-1.6L23 5H6"
+                    ></path>
+                  </svg>
+                  <span>Thêm vào giỏ</span>
+                </button>
               </div>
             </article>
           </div>

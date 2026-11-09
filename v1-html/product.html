@@ -4,6 +4,13 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Áo thun cotton basic - MÙA.</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
+    />
+    <link rel="stylesheet" href="style.css" />
     <link rel="stylesheet" href="product.css" />
   </head>
   <body>
@@ -50,6 +57,47 @@
           </form>
 
           <nav class="user-actions" aria-label="Tài khoản và giỏ hàng">
+            <label class="action-btn theme-toggle" title="Chế độ sáng/tối">
+              <input
+                type="checkbox"
+                id="theme-switch"
+                class="visually-hidden"
+                aria-label="Chế độ tối"
+                autocomplete="off"
+              />
+              <svg
+                class="icon-moon"
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.8"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                aria-hidden="true"
+              >
+                <path
+                  d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"
+                ></path>
+              </svg>
+              <svg
+                class="icon-sun"
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.8"
+                stroke-linecap="round"
+                aria-hidden="true"
+              >
+                <circle cx="12" cy="12" r="4"></circle>
+                <path
+                  d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"
+                ></path>
+              </svg>
+            </label>
             <a href="#" class="action-btn" aria-label="Tài khoản cá nhân">
               <svg
                 width="22"
@@ -64,7 +112,11 @@
                 <circle cx="12" cy="7" r="4"></circle>
               </svg>
             </a>
-            <a href="#" class="action-btn" aria-label="Giỏ hàng">
+            <a
+              href="cart.html"
+              class="action-btn"
+              aria-label="Giỏ hàng (2 sản phẩm)"
+            >
               <svg
                 width="22"
                 height="22"
@@ -80,19 +132,18 @@
                   d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"
                 ></path>
               </svg>
+              <span class="cart-badge" aria-hidden="true">2</span>
             </a>
           </nav>
         </div>
       </div>
     </header>
 
-    <main class="product-page-container">
+    <main class="product-page-container container">
       <nav class="breadcrumb-nav" aria-label="Đường dẫn trang">
         <ol class="breadcrumb-list">
           <li><a href="index.html">Cửa hàng</a></li>
-          <li class="separator">/</li>
           <li><a href="#">Áo</a></li>
-          <li class="separator">/</li>
           <li aria-current="page">Áo thun cotton basic</li>
         </ol>
       </nav>
@@ -232,7 +283,7 @@
           <div class="product-option-group">
             <div class="option-header">
               <span class="option-label">Kích cỡ</span>
-              <a href="#" class="size-guide-link">Hướng dẫn chọn size</a>
+              <a href="#" class="text-link">Hướng dẫn chọn size</a>
             </div>
             <div
               class="size-options"
@@ -276,7 +327,6 @@
 
           <div class="stock-status">
             <svg
-              class="check-icon"
               width="16"
               height="16"
               viewBox="0 0 24 24"
@@ -310,7 +360,11 @@
               </button>
             </div>
 
-            <button type="button" class="btn-add-cart-detail" disabled>
+            <button
+              type="button"
+              class="btn btn-primary btn-add-cart-detail"
+              disabled
+            >
               <svg
                 width="18"
                 height="18"
@@ -486,7 +540,7 @@
             <div class="card-details">
               <span class="product-cat">ÁO</span>
               <h3 class="product-title">
-                <a href="#">Áo thun cotton basic</a>
+                <a href="product.html">Áo thun cotton basic</a>
               </h3>
               <div class="rating-wrap">
                 <span class="stars">★★★★★</span>
@@ -684,9 +738,9 @@
               sống mỗi ngày.
             </p>
             <ul class="social-links">
-              <li><a href="#">Instagram</a></li>
-              <li><a href="#">TikTok</a></li>
-              <li><a href="#">Facebook</a></li>
+              <li><span>Instagram</span></li>
+              <li><span>TikTok</span></li>
+              <li><span>Facebook</span></li>
             </ul>
           </section>
 

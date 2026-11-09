@@ -4,18 +4,28 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>MÙA. - Trang danh sách sản phẩm</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
+    />
     <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="index.css" />
   </head>
   <body>
     <!-- ==================== HEADER ==================== -->
     <header class="site-header">
       <div class="header-inner">
-        <!-- Cụm trái: Logo và Menu điều hướng -->
         <div class="header-left">
-          <a href="#" class="logo">MÙA<span>.</span></a>
+          <a href="index.html" class="logo">MÙA<span>.</span></a>
           <nav class="nav-main" aria-label="Điều hướng chính">
             <ul class="nav-list">
-              <li><a href="#" class="nav-link">Cửa hàng</a></li>
+              <li>
+                <a href="index.html" class="nav-link active" aria-current="page"
+                  >Cửa hàng</a
+                >
+              </li>
               <li><a href="#" class="nav-link">Áo</a></li>
               <li><a href="#" class="nav-link">Đầm & Váy</a></li>
               <li><a href="#" class="nav-link">Khoác</a></li>
@@ -24,7 +34,6 @@
           </nav>
         </div>
 
-        <!-- Cụm phải: Thanh tìm kiếm và Icon chức năng -->
         <div class="header-right">
           <form class="search-box" role="search" action="#" method="get">
             <svg
@@ -53,7 +62,45 @@
           </form>
 
           <nav class="user-actions" aria-label="Tài khoản và giỏ hàng">
-            <!-- Icon tài khoản cá nhân -->
+            <label class="action-btn theme-toggle" title="Chế độ sáng/tối">
+              <input
+                type="checkbox"
+                id="theme-switch"
+                class="visually-hidden"
+                aria-label="Chế độ tối"
+                autocomplete="off"
+              />
+              <svg
+                class="icon-moon"
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.8"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                aria-hidden="true"
+              >
+                <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+              </svg>
+              <svg
+                class="icon-sun"
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.8"
+                stroke-linecap="round"
+                aria-hidden="true"
+              >
+                <circle cx="12" cy="12" r="4"></circle>
+                <path
+                  d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"
+                ></path>
+              </svg>
+            </label>
             <a href="#" class="action-btn" aria-label="Tài khoản cá nhân">
               <svg
                 width="22"
@@ -69,8 +116,7 @@
               </svg>
             </a>
 
-            <!-- Icon giỏ hàng (Shopping cart) -->
-            <a href="#" class="action-btn" aria-label="Giỏ hàng">
+            <a href="cart.html" class="action-btn" aria-label="Giỏ hàng (2 sản phẩm)">
               <svg
                 width="22"
                 height="22"
@@ -86,6 +132,7 @@
                   d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"
                 ></path>
               </svg>
+              <span class="cart-badge" aria-hidden="true">2</span>
             </a>
           </nav>
         </div>
@@ -93,8 +140,7 @@
     </header>
 
     <!-- ==================== MAIN ==================== -->
-    <main class="page-container">
-      <!-- Hero Banner giới thiệu -->
+    <main class="page-container container">
       <section class="hero-banner" aria-label="Bộ sưu tập hè 2026">
         <div class="hero-art"></div>
         <div class="hero-content">
@@ -111,14 +157,12 @@
             <a href="#products-catalog" class="btn btn-primary"
               >Mua ngay &rarr;</a
             >
-            <a href="#" class="btn btn-secondary">Xem hàng mới</a>
+            <a href="#" class="btn btn-ghost-light">Xem hàng mới</a>
           </div>
         </div>
       </section>
 
-      <!-- Khu vực danh mục và lưới sản phẩm -->
       <div id="products-catalog" class="catalog-layout">
-        <!-- Sidebar danh mục bên trái -->
         <aside class="catalog-sidebar" aria-label="Danh mục và bộ lọc">
           <div class="sidebar-block">
             <h2 class="sidebar-title">DANH MỤC</h2>
@@ -164,11 +208,9 @@
           <div class="sidebar-block">
             <h2 class="sidebar-title">ƯU ĐÃI</h2>
             <ul class="offer-list">
-              <li>
-                <a href="#" class="offer-item">
-                  <span class="tag-sale">SALE</span>
-                  <span>Đang giảm giá</span>
-                </a>
+              <li class="offer-item">
+                <span class="tag-sale">SALE</span>
+                <span>Đang giảm giá</span>
               </li>
               <li class="freeship-note">
                 <svg
@@ -190,9 +232,7 @@
           </div>
         </aside>
 
-        <!-- Nội dung hiển thị sản phẩm -->
-        <section class="catalog-content">
-          <!-- Toolbar trên cùng: Số lượng và bộ sắp xếp -->
+        <section>
           <header class="catalog-toolbar">
             <p class="product-counter"><strong>24</strong> sản phẩm</p>
             <div class="sort-selector">
@@ -218,9 +258,7 @@
             </div>
           </header>
 
-          <!-- Lưới sản phẩm placeholder -->
           <div class="product-grid">
-            <!-- Card 1: Áo thun -->
             <article class="product-card">
               <div class="card-thumb bg-beige pattern-grid">
                 <span class="badge-discount">-17%</span>
@@ -268,7 +306,7 @@
               <div class="card-details">
                 <span class="product-cat">ÁO</span>
                 <h3 class="product-title">
-                  <a href="#">Áo thun cotton basic</a>
+                  <a href="product.html">Áo thun cotton basic</a>
                 </h3>
                 <div class="rating-wrap">
                   <span class="stars">★★★★★</span>
@@ -303,7 +341,6 @@
               </div>
             </article>
 
-            <!-- Card 2: Túi tote -->
             <article class="product-card">
               <div class="card-thumb bg-tan pattern-grid">
                 <button
@@ -359,7 +396,6 @@
                   <span class="current-price">280.000₫</span>
                 </p>
 
-                <!-- Nút Thêm vào giỏ nằm ở đáy khối details -->
                 <button type="button" class="btn-add-cart">
                   <svg
                     width="16"
@@ -383,7 +419,6 @@
               </div>
             </article>
 
-            <!-- Card 3: Hoodie -->
             <article class="product-card">
               <div class="card-thumb bg-dark">
                 <button
@@ -440,7 +475,396 @@
                   <span class="current-price">590.000₫</span>
                 </p>
 
-                <!-- Nút Thêm vào giỏ nằm ở đáy khối details -->
+                <button type="button" class="btn-add-cart">
+                  <svg
+                    width="16"
+                    height="16"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    aria-hidden="true"
+                  >
+                    <circle cx="9" cy="20" r="1"></circle>
+                    <circle cx="19" cy="20" r="1"></circle>
+                    <path
+                      d="M1 1h4l2.6 12.2a2 2 0 0 0 2 1.6h9.8a2 2 0 0 0 2-1.6L23 5H6"
+                    ></path>
+                  </svg>
+                  <span>Thêm vào giỏ</span>
+                </button>
+              </div>
+            </article>
+            <article class="product-card">
+              <div class="card-thumb bg-tan pattern-grid">
+                <button
+                  type="button"
+                  class="wishlist-btn"
+                  aria-label="Lưu sản phẩm"
+                >
+                  <svg
+                    width="18"
+                    height="18"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    aria-hidden="true"
+                  >
+                    <path
+                      d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"
+                    ></path>
+                  </svg>
+                </button>
+
+                <svg
+                  class="placeholder-icon"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  aria-hidden="true"
+                >
+                  <path d="M7 2h10l1.5 20h-4.5L12 10l-2 12H5.5z" />
+                </svg>
+
+                <span class="tag-overlay">QUẦN KAKI</span>
+              </div>
+
+              <div class="card-details">
+                <span class="product-cat">QUẦN</span>
+                <h3 class="product-title">
+                  <a href="#">Quần kaki ống suông</a>
+                </h3>
+                <div class="rating-wrap">
+                  <span class="stars">★★★★★</span>
+                  <span class="rating-val">4.4</span>
+                  <span class="rating-count">(156)</span>
+                </div>
+                <p class="price-wrap">
+                  <span class="current-price">420.000₫</span>
+                </p>
+
+                <button type="button" class="btn-add-cart">
+                  <svg
+                    width="16"
+                    height="16"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    aria-hidden="true"
+                  >
+                    <circle cx="9" cy="20" r="1"></circle>
+                    <circle cx="19" cy="20" r="1"></circle>
+                    <path
+                      d="M1 1h4l2.6 12.2a2 2 0 0 0 2 1.6h9.8a2 2 0 0 0 2-1.6L23 5H6"
+                    ></path>
+                  </svg>
+                  <span>Thêm vào giỏ</span>
+                </button>
+              </div>
+            </article>
+            <article class="product-card">
+              <div class="card-thumb bg-beige pattern-grid">
+                <span class="badge-discount">-20%</span>
+
+                <button
+                  type="button"
+                  class="wishlist-btn"
+                  aria-label="Lưu sản phẩm"
+                >
+                  <svg
+                    width="18"
+                    height="18"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    aria-hidden="true"
+                  >
+                    <path
+                      d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"
+                    ></path>
+                  </svg>
+                </button>
+
+                <svg
+                  class="placeholder-icon"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  aria-hidden="true"
+                >
+                  <path d="M9 2h6l-1 6 5 14H5l5-14z" />
+                  <path d="M9.5 8h5" />
+                </svg>
+
+                <span class="tag-overlay">ĐẦM LINEN</span>
+              </div>
+
+              <div class="card-details">
+                <span class="product-cat">ĐẦM & VÁY</span>
+                <h3 class="product-title">
+                  <a href="#">Đầm linen dáng dài</a>
+                </h3>
+                <div class="rating-wrap">
+                  <span class="stars">★★★★★</span>
+                  <span class="rating-val">4.8</span>
+                  <span class="rating-count">(132)</span>
+                </div>
+                <p class="price-wrap">
+                  <span class="current-price">520.000₫</span>
+                  <span class="old-price">650.000₫</span>
+                </p>
+
+                <button type="button" class="btn-add-cart">
+                  <svg
+                    width="16"
+                    height="16"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    aria-hidden="true"
+                  >
+                    <circle cx="9" cy="20" r="1"></circle>
+                    <circle cx="19" cy="20" r="1"></circle>
+                    <path
+                      d="M1 1h4l2.6 12.2a2 2 0 0 0 2 1.6h9.8a2 2 0 0 0 2-1.6L23 5H6"
+                    ></path>
+                  </svg>
+                  <span>Thêm vào giỏ</span>
+                </button>
+              </div>
+            </article>
+            <article class="product-card">
+              <div class="card-thumb bg-dark">
+                <button
+                  type="button"
+                  class="wishlist-btn"
+                  aria-label="Lưu sản phẩm"
+                >
+                  <svg
+                    width="18"
+                    height="18"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    aria-hidden="true"
+                  >
+                    <path
+                      d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"
+                    ></path>
+                  </svg>
+                </button>
+
+                <svg
+                  class="placeholder-icon icon-muted"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  aria-hidden="true"
+                >
+                  <path d="M8 2 4 4.5 2 10l3 1.5V22h14V11.5l3-1.5-2-5.5L16 2l-4 4z" />
+                  <path d="M12 6v16" />
+                </svg>
+
+                <span class="tag-overlay">ÁO KHOÁC</span>
+              </div>
+
+              <div class="card-details">
+                <span class="product-cat">ÁO KHOÁC</span>
+                <h3 class="product-title">
+                  <a href="#">Áo khoác denim</a>
+                </h3>
+                <div class="rating-wrap">
+                  <span class="stars">★★★★★</span>
+                  <span class="rating-val">4.6</span>
+                  <span class="rating-count">(174)</span>
+                </div>
+                <p class="price-wrap">
+                  <span class="current-price">690.000₫</span>
+                </p>
+
+                <button type="button" class="btn-add-cart">
+                  <svg
+                    width="16"
+                    height="16"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    aria-hidden="true"
+                  >
+                    <circle cx="9" cy="20" r="1"></circle>
+                    <circle cx="19" cy="20" r="1"></circle>
+                    <path
+                      d="M1 1h4l2.6 12.2a2 2 0 0 0 2 1.6h9.8a2 2 0 0 0 2-1.6L23 5H6"
+                    ></path>
+                  </svg>
+                  <span>Thêm vào giỏ</span>
+                </button>
+              </div>
+            </article>
+            <article class="product-card">
+              <div class="card-thumb bg-beige pattern-grid">
+                <span class="badge-discount">-16%</span>
+
+                <button
+                  type="button"
+                  class="wishlist-btn"
+                  aria-label="Lưu sản phẩm"
+                >
+                  <svg
+                    width="18"
+                    height="18"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    aria-hidden="true"
+                  >
+                    <path
+                      d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"
+                    ></path>
+                  </svg>
+                </button>
+
+                <svg
+                  class="placeholder-icon"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  aria-hidden="true"
+                >
+                  <path d="M2 18v-4l5-1 3-4 4 3 5 1a3 3 0 0 1 3 3v2z" />
+                  <path d="M2 18h20v2H2z" />
+                </svg>
+
+                <span class="tag-overlay">SNEAKER</span>
+              </div>
+
+              <div class="card-details">
+                <span class="product-cat">GIÀY</span>
+                <h3 class="product-title">
+                  <a href="#">Giày sneaker trắng</a>
+                </h3>
+                <div class="rating-wrap">
+                  <span class="stars">★★★★★</span>
+                  <span class="rating-val">4.7</span>
+                  <span class="rating-count">(241)</span>
+                </div>
+                <p class="price-wrap">
+                  <span class="current-price">750.000₫</span>
+                  <span class="old-price">890.000₫</span>
+                </p>
+
+                <button type="button" class="btn-add-cart">
+                  <svg
+                    width="16"
+                    height="16"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    aria-hidden="true"
+                  >
+                    <circle cx="9" cy="20" r="1"></circle>
+                    <circle cx="19" cy="20" r="1"></circle>
+                    <path
+                      d="M1 1h4l2.6 12.2a2 2 0 0 0 2 1.6h9.8a2 2 0 0 0 2-1.6L23 5H6"
+                    ></path>
+                  </svg>
+                  <span>Thêm vào giỏ</span>
+                </button>
+              </div>
+            </article>
+            <article class="product-card">
+              <div class="card-thumb bg-tan pattern-grid">
+                <button
+                  type="button"
+                  class="wishlist-btn"
+                  aria-label="Lưu sản phẩm"
+                >
+                  <svg
+                    width="18"
+                    height="18"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    aria-hidden="true"
+                  >
+                    <path
+                      d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"
+                    ></path>
+                  </svg>
+                </button>
+
+                <svg
+                  class="placeholder-icon"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  aria-hidden="true"
+                >
+                  <path d="M7 13l1.2-6.5a4 4 0 0 1 7.6 0L17 13" />
+                  <path d="M2.5 13.5c3 2 16 2 19 0l-1-1.5h-17z" />
+                </svg>
+
+                <span class="tag-overlay">MŨ BUCKET</span>
+              </div>
+
+              <div class="card-details">
+                <span class="product-cat">PHỤ KIỆN</span>
+                <h3 class="product-title">
+                  <a href="#">Mũ bucket cotton</a>
+                </h3>
+                <div class="rating-wrap">
+                  <span class="stars">★★★★★</span>
+                  <span class="rating-val">4.3</span>
+                  <span class="rating-count">(88)</span>
+                </div>
+                <p class="price-wrap">
+                  <span class="current-price">190.000₫</span>
+                </p>
+
                 <button type="button" class="btn-add-cart">
                   <svg
                     width="16"
@@ -465,7 +889,6 @@
             </article>
           </div>
 
-          <!-- Nút tải thêm sản phẩm -->
           <div class="load-more-wrap">
             <button type="button" class="btn-load-more">
               Tải thêm sản phẩm <span>(16)</span>
@@ -486,9 +909,9 @@
               sống mỗi ngày.
             </p>
             <ul class="social-links">
-              <li><a href="#">Instagram</a></li>
-              <li><a href="#">TikTok</a></li>
-              <li><a href="#">Facebook</a></li>
+              <li><span>Instagram</span></li>
+              <li><span>TikTok</span></li>
+              <li><span>Facebook</span></li>
             </ul>
           </section>
 

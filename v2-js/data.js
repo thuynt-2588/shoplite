@@ -1,0 +1,118 @@
+// Dữ liệu giả cho ngày 2 — cấu trúc theo DummyJSON (/products).
+// Ngày 3 sẽ thay bằng fetch("https://dummyjson.com/products").
+//
+// Ghi chú:
+// - price: số nguyên, đơn vị VND (DummyJSON dùng USD — đổi cách format khi chuyển API).
+// - discountPercentage: có sẵn trong DummyJSON, dùng để tính giá gốc (old-price). 0 = không giảm.
+// - category: slug giống kiểu DummyJSON; tên hiển thị tiếng Việt map ở phía render.
+
+export const products = [
+  {
+    id: 1,
+    title: "Áo thun cotton basic",
+    price: 290000,
+    discountPercentage: 17,
+    thumbnail: "https://placehold.co/400x400?text=Ao+thun",
+    category: "ao",
+    rating: 4.6,
+  },
+  {
+    id: 2,
+    title: "Túi tote canvas",
+    price: 280000,
+    discountPercentage: 0,
+    thumbnail: "https://placehold.co/400x400?text=Tui+tote",
+    category: "phu-kien",
+    rating: 4.5,
+  },
+  {
+    id: 3,
+    title: "Hoodie nỉ oversize",
+    price: 590000,
+    discountPercentage: 0,
+    thumbnail: "https://placehold.co/400x400?text=Hoodie",
+    category: "ao-khoac",
+    rating: 4.7,
+  },
+  {
+    id: 4,
+    title: "Quần kaki ống suông",
+    price: 420000,
+    discountPercentage: 0,
+    thumbnail: "https://placehold.co/400x400?text=Quan+kaki",
+    category: "quan",
+    rating: 4.4,
+  },
+  {
+    id: 5,
+    title: "Đầm linen dáng dài",
+    price: 520000,
+    discountPercentage: 20,
+    thumbnail: "https://placehold.co/400x400?text=Dam+linen",
+    category: "dam-vay",
+    rating: 4.8,
+  },
+  {
+    id: 6,
+    title: "Áo khoác denim",
+    price: 650000,
+    discountPercentage: 0,
+    thumbnail: "https://placehold.co/400x400?text=Ao+khoac+denim",
+    category: "ao-khoac",
+    rating: 4.6,
+  },
+  {
+    id: 7,
+    title: "Giày sneaker trắng",
+    price: 890000,
+    discountPercentage: 10,
+    thumbnail: "https://placehold.co/400x400?text=Sneaker",
+    category: "giay",
+    rating: 4.7,
+  },
+  {
+    id: 8,
+    title: "Mũ bucket cotton",
+    price: 190000,
+    discountPercentage: 0,
+    thumbnail: "https://placehold.co/400x400?text=Mu+bucket",
+    category: "phu-kien",
+    rating: 4.3,
+  },
+  {
+    id: 9,
+    title: "Áo sơ mi oxford",
+    price: 450000,
+    discountPercentage: 15,
+    thumbnail: "https://placehold.co/400x400?text=So+mi",
+    category: "ao",
+    rating: 4.5,
+  },
+  {
+    id: 10,
+    title: "Quần jeans slim fit",
+    price: 550000,
+    discountPercentage: 0,
+    thumbnail: "https://placehold.co/400x400?text=Jeans",
+    category: "quan",
+    rating: 4.4,
+  },
+  {
+    id: 11,
+    title: "Chân váy xếp ly",
+    price: 380000,
+    discountPercentage: 25,
+    thumbnail: "https://placehold.co/400x400?text=Chan+vay",
+    category: "dam-vay",
+    rating: 4.6,
+  },
+  {
+    id: 12,
+    title: "Sandal quai ngang",
+    price: 320000,
+    discountPercentage: 0,
+    thumbnail: "https://placehold.co/400x400?text=Sandal",
+    category: "giay",
+    rating: 4.2,
+  },
+];

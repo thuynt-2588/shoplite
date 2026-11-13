@@ -440,3 +440,115 @@
     font-size: var(--fs-sm);
   }
 }
+
+/* ==================== Nội dung render từ JS (DummyJSON) ==================== */
+.product-detail-layout[hidden] {
+  display: none;
+}
+
+/* Bọc phần thông tin động — giữ bố cục cột dọc như .product-info-panel */
+.product-info-content {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.gallery-main-image {
+  position: relative;
+}
+
+.gallery-img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.gallery-no-image {
+  font-size: var(--fs-sm);
+  color: var(--color-media-label);
+}
+
+.thumb-inner img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.thumb-btn[aria-current="true"] {
+  border-color: var(--color-inverse);
+}
+
+/* Thông tin thêm: thương hiệu, SKU, bảo hành... */
+.product-meta {
+  display: grid;
+  gap: var(--space-2);
+  margin-bottom: var(--space-6);
+  font-size: var(--fs-sm);
+}
+
+.product-meta div {
+  display: grid;
+  grid-template-columns: 110px minmax(0, 1fr);
+  gap: var(--space-3);
+}
+
+.product-meta dt {
+  color: var(--color-ink-muted);
+}
+
+.product-meta dd {
+  margin: 0;
+  font-weight: var(--fw-medium);
+  color: var(--color-ink);
+}
+
+/* Tồn kho: sắp hết / hết hàng */
+.stock-status--low {
+  color: var(--color-accent);
+}
+
+.stock-status--out {
+  color: var(--color-ink-muted);
+}
+
+.btn-add-cart-detail:disabled,
+.qty-btn:disabled,
+.qty-input:disabled {
+  cursor: not-allowed;
+  opacity: 0.55;
+}
+
+/* Skeleton khối nút mua */
+.skeleton-block {
+  display: block;
+  height: 48px;
+  margin-top: var(--space-4);
+  border-radius: var(--radius-sm);
+}
+
+/* Lỗi / không tìm thấy */
+.product-detail-error {
+  max-width: 520px;
+  margin: var(--space-10) auto;
+  text-align: center;
+  color: var(--color-ink-soft);
+}
+
+.product-detail-error-title {
+  margin-bottom: var(--space-3);
+  font-size: var(--fs-xl);
+  font-weight: var(--fw-bold);
+  color: var(--color-ink);
+}
+
+.product-detail-error p {
+  margin-bottom: var(--space-6);
+}
+
+.product-detail-error-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-4);
+}

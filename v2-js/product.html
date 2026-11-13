@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Áo thun cotton basic - MÙA.</title>
+    <title>Chi tiết sản phẩm - MÙA.</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -115,7 +115,7 @@
             <a
               href="cart.html"
               class="action-btn"
-              aria-label="Giỏ hàng (2 sản phẩm)"
+              aria-label="Giỏ hàng"
             >
               <svg
                 width="22"
@@ -132,7 +132,7 @@
                   d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"
                 ></path>
               </svg>
-              <span class="cart-badge" aria-hidden="true">2</span>
+              <span class="cart-badge" aria-hidden="true" hidden></span>
             </a>
           </nav>
         </div>
@@ -143,248 +143,27 @@
       <nav class="breadcrumb-nav" aria-label="Đường dẫn trang">
         <ol class="breadcrumb-list">
           <li><a href="index.html">Cửa hàng</a></li>
-          <li><a href="#">Áo</a></li>
-          <li aria-current="page">Áo thun cotton basic</li>
+          <li id="breadcrumb-category" hidden><a href="index.html"></a></li>
+          <li id="breadcrumb-current" aria-current="page">Đang tải…</li>
         </ol>
       </nav>
 
-      <section class="product-detail-layout" aria-label="Chi tiết sản phẩm">
-        <div class="product-gallery">
-          <div class="gallery-main-image bg-beige pattern-grid">
-            <svg
-              class="product-big-icon"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              aria-hidden="true"
-            >
-              <path
-                d="M20.38 3.46L16 2a4 4 0 01-8 0L3.62 3.46a2 2 0 00-1.34 2.23l.58 3.47a1 1 0 00.99.84H6v10c0 1.1.9 2 2 2h8a2 2 0 002-2V10h2.15a1 1 0 00.99-.84l.58-3.47a2 2 0 00-1.34-2.23z"
-              />
-            </svg>
-          </div>
+      <!-- Hiện khi id không hợp lệ / không tồn tại / lỗi mạng (render từ product-detail.js) -->
+      <div id="product-detail-error" class="product-detail-error" role="alert" hidden></div>
 
-          <nav class="gallery-thumbs" aria-label="Danh sách ảnh thu nhỏ">
-            <button
-              type="button"
-              class="thumb-btn active"
-              aria-label="Xem ảnh 1 (đang chọn)"
-              aria-current="true"
-            >
-              <span class="thumb-inner bg-beige pattern-grid">
-                <svg
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="1.8"
-                  aria-hidden="true"
-                >
-                  <path
-                    d="M20.38 3.46L16 2a4 4 0 01-8 0L3.62 3.46a2 2 0 00-1.34 2.23l.58 3.47a1 1 0 00.99.84H6v10c0 1.1.9 2 2 2h8a2 2 0 002-2V10h2.15a1 1 0 00.99-.84l.58-3.47a2 2 0 00-1.34-2.23z"
-                  />
-                </svg>
-              </span>
-            </button>
-
-            <button type="button" class="thumb-btn" aria-label="Xem ảnh 2">
-              <span class="thumb-inner bg-beige pattern-grid">
-                <svg
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="1.8"
-                  aria-hidden="true"
-                >
-                  <path
-                    d="M20.38 3.46L16 2a4 4 0 01-8 0L3.62 3.46a2 2 0 00-1.34 2.23l.58 3.47a1 1 0 00.99.84H6v10c0 1.1.9 2 2 2h8a2 2 0 002-2V10h2.15a1 1 0 00.99-.84l.58-3.47a2 2 0 00-1.34-2.23z"
-                  />
-                </svg>
-              </span>
-            </button>
-
-            <button type="button" class="thumb-btn" aria-label="Xem ảnh 3">
-              <span class="thumb-inner bg-beige pattern-grid">
-                <svg
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="1.8"
-                  aria-hidden="true"
-                >
-                  <path
-                    d="M20.38 3.46L16 2a4 4 0 01-8 0L3.62 3.46a2 2 0 00-1.34 2.23l.58 3.47a1 1 0 00.99.84H6v10c0 1.1.9 2 2 2h8a2 2 0 002-2V10h2.15a1 1 0 00.99-.84l.58-3.47a2 2 0 00-1.34-2.23z"
-                  />
-                </svg>
-              </span>
-            </button>
-          </nav>
+      <section
+        class="product-detail-layout"
+        id="product-detail"
+        aria-label="Chi tiết sản phẩm"
+        aria-busy="true"
+      >
+        <!-- Ảnh & thông tin sản phẩm được render từ DummyJSON GET /products/{id} -->
+        <div class="product-gallery" id="product-gallery">
+          <noscript>Bật JavaScript để xem chi tiết sản phẩm.</noscript>
         </div>
 
         <div class="product-info-panel">
-          <span class="product-category-tag">ÁO</span>
-          <h1 class="product-name">Áo thun cotton basic</h1>
-
-          <div class="product-rating-row">
-            <span class="stars">★★★★★</span>
-            <span class="rating-score">4.6</span>
-            <span class="rating-count">214 đánh giá</span>
-            <span class="divider-dot">•</span>
-            <span class="sold-count">Đã bán 1.820</span>
-          </div>
-
-          <div class="product-price-row">
-            <span class="price-current">290.000₫</span>
-            <span class="price-original">350.000₫</span>
-            <span class="badge-sale">-17%</span>
-          </div>
-
-          <p class="product-desc">
-            Áo thun cotton 100% bo cổ, form regular thoáng mát. Đường may chắc
-            chắn, giặt máy không xù.
-          </p>
-
-          <div class="product-option-group">
-            <div class="option-header">
-              <span class="option-label">Màu sắc</span>
-              <span class="option-selected-name">Trắng</span>
-            </div>
-            <div
-              class="color-options"
-              role="radiogroup"
-              aria-label="Chọn màu sắc"
-            >
-              <button
-                type="button"
-                class="color-dot color-white active"
-                aria-label="Màu trắng"
-                aria-checked="true"
-                role="radio"
-              ></button>
-              <button
-                type="button"
-                class="color-dot color-dark"
-                aria-label="Màu đen"
-                aria-checked="false"
-                role="radio"
-              ></button>
-              <button
-                type="button"
-                class="color-dot color-sage"
-                aria-label="Màu xanh sage"
-                aria-checked="false"
-                role="radio"
-              ></button>
-            </div>
-          </div>
-
-          <div class="product-option-group">
-            <div class="option-header">
-              <span class="option-label">Kích cỡ</span>
-              <a href="#" class="text-link">Hướng dẫn chọn size</a>
-            </div>
-            <div
-              class="size-options"
-              role="radiogroup"
-              aria-label="Chọn kích cỡ"
-            >
-              <button
-                type="button"
-                class="size-btn"
-                role="radio"
-                aria-checked="false"
-              >
-                S
-              </button>
-              <button
-                type="button"
-                class="size-btn"
-                role="radio"
-                aria-checked="false"
-              >
-                M
-              </button>
-              <button
-                type="button"
-                class="size-btn"
-                role="radio"
-                aria-checked="false"
-              >
-                L
-              </button>
-              <button
-                type="button"
-                class="size-btn"
-                role="radio"
-                aria-checked="false"
-              >
-                XL
-              </button>
-            </div>
-          </div>
-
-          <div class="stock-status">
-            <svg
-              width="16"
-              height="16"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2.5"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              aria-hidden="true"
-            >
-              <polyline points="20 6 9 17 4 12"></polyline>
-            </svg>
-            <span>Còn hàng &mdash; 48 sản phẩm</span>
-          </div>
-
-          <div class="purchase-actions">
-            <div class="quantity-stepper">
-              <button type="button" class="qty-btn" aria-label="Giảm số lượng">
-                &minus;
-              </button>
-              <input
-                type="number"
-                class="qty-input"
-                value="1"
-                min="1"
-                max="48"
-                aria-label="Số lượng sản phẩm"
-              />
-              <button type="button" class="qty-btn" aria-label="Tăng số lượng">
-                &plus;
-              </button>
-            </div>
-
-            <button
-              type="button"
-              class="btn btn-primary btn-add-cart-detail"
-              disabled
-            >
-              <svg
-                width="18"
-                height="18"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                aria-hidden="true"
-              >
-                <circle cx="9" cy="20" r="1.5"></circle>
-                <circle cx="19" cy="20" r="1.5"></circle>
-                <path
-                  d="M1 1h4l2.6 12.2a2 2 0 0 0 2 1.6h9.8a2 2 0 0 0 2-1.6L23 5H6"
-                ></path>
-              </svg>
-              <span>Chọn kích cỡ</span>
-            </button>
-          </div>
+          <div class="product-info-content" id="product-info"></div>
 
           <ul class="policy-features-grid">
             <li class="policy-item">
@@ -783,5 +562,6 @@
         </div>
       </div>
     </footer>
+    <script type="module" src="./product-detail.js"></script>
   </body>
 </html>

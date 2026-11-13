@@ -1,7 +1,13 @@
 // Điểm vào của trang danh sách sản phẩm (index.html).
-import { products } from "./data.js";
+import { addToCart } from "./cart.js";
+import { initCartBadge, showAddedFeedback } from "./cart-ui.js";
+import { fetchProducts } from "./data.js";
 import { filterByKeyword } from "./product-utils.js";
-import { renderProductGrid } from "./render.js";
+import {
+  renderLoadingState,
+  renderProductError,
+  renderProductGrid,
+} from "./render.js";
 
 const grid = document.querySelector("#product-grid");
 const counter = document.querySelector("#product-count");
@@ -11,13 +17,39 @@ const searchInput = document.querySelector("#search-input");
 // Trạng thái hiện tại của trang — sau này thêm sort/category thì bổ sung vào đây.
 const state = {
   keyword: "",
+  products: [],
+  status: "loading", // "loading" | "ready" | "error"
 };
 
 // Tính danh sách cần hiển thị từ dữ liệu gốc + state, rồi vẽ lại grid và số đếm.
 function update() {
-  const visible = filterByKeyword(products, state.keyword);
+  // Đang tải hoặc lỗi thì giữ nguyên skeleton/thông báo lỗi; từ khoá vẫn được lưu
+  // trong state và sẽ được áp dụng ngay khi dữ liệu về.
+  if (state.status !== "ready") return;
+
+  const visible = filterByKeyword(state.products, state.keyword);
   renderProductGrid(grid, visible);
   counter.textContent = visible.length;
+}
+
+async function loadProducts() {
+  state.status = "loading";
+  grid.setAttribute("aria-busy", "true");
+  counter.textContent = "…";
+  renderLoadingState(grid);
+
+  try {
+    state.products = await fetchProducts();
+    state.status = "ready";
+    update();
+  } catch (error) {
+    console.error("Không thể tải danh sách sản phẩm:", error);
+    state.status = "error";
+    counter.textContent = "0";
+    renderProductError(grid);
+  } finally {
+    grid.setAttribute("aria-busy", "false");
+  }
 }
 
 // "input" bắn ra mỗi lần nội dung đổi: gõ, xoá, dán, bấm nút ✕ của ô search.
@@ -35,15 +67,22 @@ searchForm.addEventListener("submit", (event) => {
 // Card bị innerHTML vẽ lại mỗi lần lọc, nên listener gắn trên từng nút sẽ mất —
 // còn listener trên grid (phần tử cha cố định) thì vẫn bắt được click từ card mới.
 grid.addEventListener("click", (event) => {
+  if (event.target.closest(".btn-retry-products")) {
+    loadProducts();
+    return;
+  }
+
   const button = event.target.closest(".btn-add-cart");
   if (!button) return; // click vào chỗ khác trong grid → bỏ qua
 
   const card = button.closest(".product-card");
   const id = card.dataset.id; // luôn là chuỗi, vd "3"
-  const product = products.find((p) => String(p.id) === id);
+  const product = state.products.find((p) => String(p.id) === id);
+  if (!product) return;
 
-  // Ngày 3: thay bằng lưu vào localStorage.
-  console.log("Thêm vào giỏ:", product);
+  addToCart(product, 1);
+  showAddedFeedback(button);
 });
 
-update();
+initCartBadge();
+loadProducts();

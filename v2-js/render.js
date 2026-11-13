@@ -1,4 +1,4 @@
-// Dựng HTML cho card sản phẩm từ dữ liệu (data.js hôm nay, DummyJSON từ ngày 3).
+// Dựng HTML cho card sản phẩm từ dữ liệu DummyJSON.
 
 const CATEGORY_LABELS = {
   ao: "Áo",
@@ -17,7 +17,7 @@ const HEART_ICON = `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" 
 const CART_ICON = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="20" r="1"></circle><circle cx="19" cy="20" r="1"></circle><path d="M1 1h4l2.6 12.2a2 2 0 0 0 2 1.6h9.8a2 2 0 0 0 2-1.6L23 5H6"></path></svg>`;
 
 // Chặn chèn HTML khi dữ liệu đến từ nguồn ngoài (API) — luôn escape trước khi đưa vào innerHTML.
-function escapeHtml(value) {
+export function escapeHtml(value) {
   return String(value ?? "")
     .replace(/&/g, "&amp;")
     .replace(/</g, "&lt;")
@@ -26,15 +26,16 @@ function escapeHtml(value) {
     .replace(/'/g, "&#39;");
 }
 
-// 290000 -> "290.000₫"
-export function formatPrice(vnd) {
-  return `${Math.round(vnd).toLocaleString("vi-VN")}₫`;
+export function formatPrice(price) {
+  return new Intl.NumberFormat("en-US", {
+    style: "currency",
+    currency: "USD",
+  }).format(price);
 }
 
-// Giá gốc trước giảm, làm tròn lên hàng nghìn: 290000 & 17% -> 350000
 export function getOldPrice(price, discountPercentage) {
   if (!discountPercentage) return null;
-  return Math.ceil(price / (1 - discountPercentage / 100) / 1000) * 1000;
+  return price / (1 - discountPercentage / 100);
 }
 
 // 4.6 -> "★★★★★", 4.2 -> "★★★★☆"
@@ -81,4 +82,29 @@ export function renderProductGrid(container, list) {
   container.innerHTML = list.length
     ? list.map((p, i) => productCardHTML(p, i)).join("")
     : `<p class="product-empty">Không tìm thấy sản phẩm phù hợp.</p>`;
+}
+
+export function renderLoadingState(container, count = 8) {
+  container.innerHTML = Array.from(
+    { length: count },
+    () => `
+      <article class="product-card skeleton-card" aria-hidden="true">
+        <div class="skeleton skeleton-thumb"></div>
+        <div class="card-details">
+          <span class="skeleton skeleton-line skeleton-category"></span>
+          <span class="skeleton skeleton-line skeleton-title"></span>
+          <span class="skeleton skeleton-line skeleton-rating"></span>
+          <span class="skeleton skeleton-line skeleton-price"></span>
+          <span class="skeleton skeleton-button"></span>
+        </div>
+      </article>`,
+  ).join("");
+}
+
+export function renderProductError(container) {
+  container.innerHTML = `
+    <div class="product-error" role="alert">
+      <p>Không thể tải danh sách sản phẩm. Vui lòng kiểm tra kết nối và thử lại.</p>
+      <button type="button" class="btn-retry-products">Thử lại</button>
+    </div>`;
 }

@@ -1,118 +1,50 @@
-// Dữ liệu giả cho ngày 2 — cấu trúc theo DummyJSON (/products).
-// Ngày 3 sẽ thay bằng fetch("https://dummyjson.com/products").
-//
-// Ghi chú:
-// - price: số nguyên, đơn vị VND (DummyJSON dùng USD — đổi cách format khi chuyển API).
-// - discountPercentage: có sẵn trong DummyJSON, dùng để tính giá gốc (old-price). 0 = không giảm.
-// - category: slug giống kiểu DummyJSON; tên hiển thị tiếng Việt map ở phía render.
+// Lấy dữ liệu sản phẩm từ DummyJSON (https://dummyjson.com/docs/products).
+const API_BASE = "https://dummyjson.com";
 
-export const products = [
-  {
-    id: 1,
-    title: "Áo thun cotton basic",
-    price: 290000,
-    discountPercentage: 17,
-    thumbnail: "https://placehold.co/400x400?text=Ao+thun",
-    category: "ao",
-    rating: 4.6,
-  },
-  {
-    id: 2,
-    title: "Túi tote canvas",
-    price: 280000,
-    discountPercentage: 0,
-    thumbnail: "https://placehold.co/400x400?text=Tui+tote",
-    category: "phu-kien",
-    rating: 4.5,
-  },
-  {
-    id: 3,
-    title: "Hoodie nỉ oversize",
-    price: 590000,
-    discountPercentage: 0,
-    thumbnail: "https://placehold.co/400x400?text=Hoodie",
-    category: "ao-khoac",
-    rating: 4.7,
-  },
-  {
-    id: 4,
-    title: "Quần kaki ống suông",
-    price: 420000,
-    discountPercentage: 0,
-    thumbnail: "https://placehold.co/400x400?text=Quan+kaki",
-    category: "quan",
-    rating: 4.4,
-  },
-  {
-    id: 5,
-    title: "Đầm linen dáng dài",
-    price: 520000,
-    discountPercentage: 20,
-    thumbnail: "https://placehold.co/400x400?text=Dam+linen",
-    category: "dam-vay",
-    rating: 4.8,
-  },
-  {
-    id: 6,
-    title: "Áo khoác denim",
-    price: 650000,
-    discountPercentage: 0,
-    thumbnail: "https://placehold.co/400x400?text=Ao+khoac+denim",
-    category: "ao-khoac",
-    rating: 4.6,
-  },
-  {
-    id: 7,
-    title: "Giày sneaker trắng",
-    price: 890000,
-    discountPercentage: 10,
-    thumbnail: "https://placehold.co/400x400?text=Sneaker",
-    category: "giay",
-    rating: 4.7,
-  },
-  {
-    id: 8,
-    title: "Mũ bucket cotton",
-    price: 190000,
-    discountPercentage: 0,
-    thumbnail: "https://placehold.co/400x400?text=Mu+bucket",
-    category: "phu-kien",
-    rating: 4.3,
-  },
-  {
-    id: 9,
-    title: "Áo sơ mi oxford",
-    price: 450000,
-    discountPercentage: 15,
-    thumbnail: "https://placehold.co/400x400?text=So+mi",
-    category: "ao",
-    rating: 4.5,
-  },
-  {
-    id: 10,
-    title: "Quần jeans slim fit",
-    price: 550000,
-    discountPercentage: 0,
-    thumbnail: "https://placehold.co/400x400?text=Jeans",
-    category: "quan",
-    rating: 4.4,
-  },
-  {
-    id: 11,
-    title: "Chân váy xếp ly",
-    price: 380000,
-    discountPercentage: 25,
-    thumbnail: "https://placehold.co/400x400?text=Chan+vay",
-    category: "dam-vay",
-    rating: 4.6,
-  },
-  {
-    id: 12,
-    title: "Sandal quai ngang",
-    price: 320000,
-    discountPercentage: 0,
-    thumbnail: "https://placehold.co/400x400?text=Sandal",
-    category: "giay",
-    rating: 4.2,
-  },
-];
+// Danh sách: select=... chỉ lấy các trường card cần dùng để giảm dung lượng tải (id luôn có sẵn).
+const PRODUCTS_LIST_URL = `${API_BASE}/products?limit=30&select=title,price,discountPercentage,thumbnail,category,rating,stock`;
+
+// Quá thời gian này mà chưa có phản hồi thì coi như lỗi, tránh skeleton quay mãi.
+const REQUEST_TIMEOUT_MS = 10000;
+
+// Lỗi riêng cho trường hợp API trả 404 — trang chi tiết hiển thị "không tìm thấy"
+// thay vì "lỗi kết nối" và không cần nút Thử lại.
+export class ProductNotFoundError extends Error {
+  constructor(id) {
+    super(`Không tìm thấy sản phẩm có id "${id}".`);
+    this.name = "ProductNotFoundError";
+  }
+}
+
+async function getJSON(url) {
+  const response = await fetch(url, {
+    signal: AbortSignal.timeout(REQUEST_TIMEOUT_MS),
+  });
+  if (!response.ok) {
+    const error = new Error(`Yêu cầu thất bại (HTTP ${response.status}).`);
+    error.status = response.status;
+    throw error;
+  }
+  return response.json();
+}
+
+export async function fetchProducts() {
+  const data = await getJSON(PRODUCTS_LIST_URL);
+  if (!Array.isArray(data.products)) {
+    throw new Error("Dữ liệu sản phẩm từ API không hợp lệ.");
+  }
+  return data.products;
+}
+
+export async function fetchProductById(id) {
+  try {
+    const product = await getJSON(`${API_BASE}/products/${encodeURIComponent(id)}`);
+    if (!product || product.id == null) {
+      throw new Error("Dữ liệu sản phẩm từ API không hợp lệ.");
+    }
+    return product;
+  } catch (error) {
+    if (error.status === 404) throw new ProductNotFoundError(id);
+    throw error;
+  }
+}

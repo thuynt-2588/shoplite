@@ -48,7 +48,7 @@ export function renderStars(rating: number): string {
 }
 
 // Product cards and grid states
-export function productCardHTML(product: ProductSummary, index = 0): string {
+export function productCardHTML(product: ProductSummary, index: number = 0): string {
   const { id, title, price, thumbnail, category, rating, discountPercentage } = product;
   const oldPrice = getOldPrice(price, discountPercentage);
   const label = CATEGORY_LABELS[category] ?? category;
@@ -87,7 +87,7 @@ export function renderProductGrid(container: HTMLElement, list: readonly Product
     : `<p class="product-empty">Không tìm thấy sản phẩm phù hợp.</p>`;
 }
 
-export function renderLoadingState(container: HTMLElement, count = 8): void {
+export function renderLoadingState(container: HTMLElement, count: number = 8): void {
   container.innerHTML = Array.from(
     { length: count },
     () => `

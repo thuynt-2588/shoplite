@@ -36,27 +36,18 @@ export interface Review {
 }
 
 export interface ProductListResponse {
-  products: ProductSummary[];
+  products: Product[];
   total: number;
   skip: number;
   limit: number;
 }
 
 // Cart types
-export interface CartItem extends Product {
+export interface CartItem extends CartProductInput {
   quantity: number;
 }
 
-export interface CartEntry {
-  id: ProductId;
-  title: string;
-  price: number;
-  thumbnail: string;
-  stock: number;
-  quantity: number;
-}
-
-export type Cart = CartEntry[];
+export type Cart = CartItem[];
 
 export type CartProductInput = Pick<ProductSummary, "id" | "title" | "price" | "thumbnail" | "stock">;
 

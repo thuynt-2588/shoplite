@@ -1,4 +1,4 @@
-import type { Cart, CartEntry, CartProductInput, ProductId } from "./types.ts";
+import type { Cart, CartItem, CartProductInput, ProductId } from "./types.ts";
 
 const STORAGE_KEY = "shoplite:cart";
 
@@ -16,12 +16,12 @@ declare global {
 
 export const DEFAULT_MAX_QTY = 99;
 
-export function maxQtyOf(item: Pick<CartEntry, "stock">): number {
+export function maxQtyOf(item: Pick<CartItem, "stock">): number {
   const stock = Math.floor(Number(item.stock));
   return stock > 0 ? stock : DEFAULT_MAX_QTY;
 }
 
-function clampQty(item: Pick<CartEntry, "stock">, qty: unknown): number {
+function clampQty(item: Pick<CartItem, "stock">, qty: unknown): number {
   const n = Math.floor(Number(qty));
   if (!Number.isFinite(n)) return 1;
   return Math.min(maxQtyOf(item), Math.max(1, n));
@@ -30,7 +30,7 @@ function clampQty(item: Pick<CartEntry, "stock">, qty: unknown): number {
 function sanitize(raw: unknown): Cart {
   if (!Array.isArray(raw)) return [];
 
-  return raw.flatMap((entry: unknown): CartEntry[] => {
+  return raw.flatMap((entry: unknown): CartItem[] => {
     if (typeof entry !== "object" || entry === null) return [];
     const item = entry as Record<string, unknown>;
 
@@ -72,23 +72,25 @@ function saveCart(cart: Cart): Cart {
 
 const sameId = (a: ProductId | string, b: ProductId | string): boolean => String(a) === String(b);
 
-export function addToCart(product: CartProductInput, quantity = 1): Cart {
+export function addToCart(product: CartProductInput, quantity: number = 1): CartItem[] {
+  if (!product || product.id == null) throw new Error("addToCart: thiếu sản phẩm.");
+
   const cart = getCart();
   const existing = cart.find((item) => sameId(item.id, product.id));
 
   if (existing) {
     existing.title = product.title;
     existing.price = Number(product.price);
-    existing.thumbnail = product.thumbnail || existing.thumbnail;
+    existing.thumbnail = product.thumbnail ?? existing.thumbnail;
     existing.stock = Number(product.stock) || existing.stock;
-    existing.quantity = clampQty(existing, existing.quantity + quantity);
+    existing.quantity = clampQty(existing, existing.quantity + Number(quantity));
   } else {
     const stock = Number(product.stock) || 0;
     cart.push({
       id: product.id,
-      title: product.title,
+      title: String(product.title ?? ""),
       price: Number(product.price),
-      thumbnail: product.thumbnail,
+      thumbnail: String(product.thumbnail ?? ""),
       stock,
       quantity: clampQty({ stock }, quantity),
     });
@@ -97,11 +99,11 @@ export function addToCart(product: CartProductInput, quantity = 1): Cart {
   return saveCart(cart);
 }
 
-export function removeFromCart(id: ProductId | string): Cart {
+export function removeFromCart(id: ProductId | string): CartItem[] {
   return saveCart(getCart().filter((item) => !sameId(item.id, id)));
 }
 
-export function updateQty(id: ProductId | string, qty: number): Cart {
+export function updateQty(id: ProductId | string, qty: number): CartItem[] {
   if (qty < 1) return removeFromCart(id);
 
   const cart = getCart();
@@ -116,12 +118,12 @@ export function clearCart(): Cart {
   return saveCart([]);
 }
 
-export function getCartTotal(cart: readonly CartEntry[] = getCart()): number {
+export function getCartTotal(cart: readonly CartItem[] = getCart()): number {
   const total = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
   return Math.round(total * 100) / 100;
 }
 
-export function getCartCount(cart: readonly CartEntry[] = getCart()): number {
+export function getCartCount(cart: readonly CartItem[] = getCart()): number {
   return cart.reduce((sum, item) => sum + item.quantity, 0);
 }
 

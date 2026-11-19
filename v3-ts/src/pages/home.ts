@@ -5,7 +5,7 @@ import { fetchProducts } from "../data.ts";
 import { eventTargetElement, mustQuery } from "../dom.ts";
 import { filterByKeyword } from "../product-utils.ts";
 import { renderLoadingState, renderProductError, renderProductGrid } from "../render.ts";
-import type { LoadStatus, ProductSummary } from "../types.ts";
+import type { LoadStatus, Product } from "../types.ts";
 
 const grid = mustQuery("#product-grid");
 const counter = mustQuery("#product-count");
@@ -14,7 +14,7 @@ const searchInput = mustQuery<HTMLInputElement>("#search-input");
 
 interface HomeState {
   keyword: string;
-  products: ProductSummary[];
+  products: Product[];
   status: LoadStatus;
 }
 

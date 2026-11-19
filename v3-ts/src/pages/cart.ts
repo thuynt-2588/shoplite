@@ -11,7 +11,7 @@ import {
 import { initCartBadge } from "../cart-ui.ts";
 import { eventTargetElement, mustQuery } from "../dom.ts";
 import { escapeHtml, formatPrice } from "../render.ts";
-import type { Cart, CartEntry } from "../types.ts";
+import type { Cart, CartItem } from "../types.ts";
 
 // Shipping thresholds
 const FREESHIP_THRESHOLD = 100;
@@ -36,7 +36,7 @@ type ItemAction = "increase" | "decrease" | "remove";
 type FocusAction = ItemAction | "input";
 
 // Cart rendering
-function cartItemHTML(item: CartEntry): string {
+function cartItemHTML(item: CartItem): string {
   const href = `product.html?id=${encodeURIComponent(item.id)}`;
   const title = escapeHtml(item.title);
   const max = maxQtyOf(item);
@@ -151,7 +151,7 @@ function withFocus(target: Element | null, action: () => void): void {
 }
 
 // Cart events
-const findItem = (id: string): CartEntry | undefined =>
+const findItem = (id: string): CartItem | undefined =>
   getCart().find((item) => String(item.id) === id);
 
 el.items.addEventListener("click", (event) => {

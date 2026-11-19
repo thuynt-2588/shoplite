@@ -1,9 +1,9 @@
 // Product API
-import type { Product, ProductListResponse, ProductSummary } from "./types.ts";
+import type { Product, ProductListResponse } from "./types.ts";
 
 const API_BASE = "https://dummyjson.com";
 
-const PRODUCTS_LIST_URL = `${API_BASE}/products?limit=30&select=title,price,discountPercentage,thumbnail,category,rating,stock`;
+const PRODUCTS_LIST_URL = `${API_BASE}/products?limit=30`;
 const REQUEST_TIMEOUT_MS = 10000;
 
 // API errors
@@ -33,7 +33,7 @@ async function getJSON<T>(url: string): Promise<T> {
   return (await response.json()) as T;
 }
 
-export async function fetchProducts(): Promise<ProductSummary[]> {
+export async function fetchProducts(): Promise<Product[]> {
   const data = await getJSON<Partial<ProductListResponse>>(PRODUCTS_LIST_URL);
   if (!Array.isArray(data.products)) {
     throw new Error("Dữ liệu sản phẩm từ API không hợp lệ.");

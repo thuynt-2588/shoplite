@@ -1,0 +1,565 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Tailwind card - MÙA.</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
+    />
+    <link rel="stylesheet" href="style.css" />
+
+    <!-- Tailwind Play CDN (chỉ dùng cho học/prototype, không dùng production) -->
+    <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+    <script>
+      // Nối Tailwind vào design system: mọi màu / spacing / bo góc / bóng
+      // trỏ về CSS variables trong style.css → đổi biến thì card Tailwind
+      // đổi theo y như card CSS thuần.
+      tailwind.config = {
+        corePlugins: { preflight: false }, // style.css đã có reset riêng
+        theme: {
+          extend: {
+            colors: {
+              surface: "var(--color-surface)",
+              ink: {
+                DEFAULT: "var(--color-ink)",
+                soft: "var(--color-ink-soft)",
+                muted: "var(--color-ink-muted)",
+              },
+              accent: "var(--color-accent)",
+              "on-accent": "var(--color-on-accent)",
+              inverse: "var(--color-inverse)",
+              "on-inverse": "var(--color-on-inverse)",
+              "tone-beige": "var(--tone-beige)",
+              "media-icon": "var(--color-media-icon)",
+              "media-label": "var(--color-media-label)",
+            },
+            // Chỉ ghi đè các bước TRÙNG giá trị với Tailwind mặc định (2px → 24px),
+            // nên p-3 vẫn = 12px như tài liệu Tailwind, chỉ khác là lấy từ biến.
+            spacing: {
+              0.5: "var(--space-0-5)",
+              1: "var(--space-1)",
+              1.5: "var(--space-1-5)",
+              2: "var(--space-2)",
+              2.5: "var(--space-2-5)",
+              3: "var(--space-3)",
+              3.5: "var(--space-3-5)",
+              4: "var(--space-4)",
+              5: "var(--space-5)",
+              6: "var(--space-6)",
+            },
+            borderRadius: {
+              card: "var(--radius-xl)",
+              media: "var(--radius-lg)",
+              pill: "var(--radius-pill)",
+            },
+            boxShadow: {
+              card: "var(--shadow-sm)",
+              "card-hover": "var(--shadow-md)",
+              accent: "var(--shadow-accent)",
+              focus: "var(--focus-ring)",
+            },
+            fontSize: {
+              xs: "var(--fs-xs)",
+              sm: "var(--fs-sm)",
+              lg: "var(--fs-lg)",
+            },
+          },
+        },
+      };
+    </script>
+
+    <style>
+      /* Trang demo — chỉ dùng biến của design system */
+      .demo {
+        padding-top: var(--space-7);
+        padding-bottom: var(--space-11);
+      }
+      .demo-bar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: var(--space-4);
+        margin-bottom: var(--space-6);
+      }
+      .demo-title {
+        font-size: var(--fs-3xl);
+      }
+      .demo-lead {
+        max-width: 720px;
+        margin-bottom: var(--space-8);
+        color: var(--color-ink-soft);
+      }
+      .demo-compare {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 280px));
+        gap: var(--space-7);
+        margin-bottom: var(--space-10);
+      }
+      .demo-label {
+        margin-bottom: var(--space-3);
+        font-size: var(--fs-sm);
+        font-weight: var(--fw-bold);
+        color: var(--color-ink-muted);
+        letter-spacing: 0.04em;
+      }
+      .map-wrap {
+        overflow-x: auto;
+        border: 1px solid var(--color-line);
+        border-radius: var(--radius-md);
+        background: var(--color-surface);
+      }
+      .map-table {
+        width: 100%;
+        min-width: 680px;
+        border-collapse: collapse;
+        font-size: var(--fs-sm);
+      }
+      .map-table th,
+      .map-table td {
+        padding: var(--space-2-5) var(--space-4);
+        border-bottom: 1px solid var(--color-line);
+        text-align: left;
+        vertical-align: top;
+      }
+      .map-table th {
+        position: sticky;
+        top: 0;
+        background: var(--color-surface-3);
+        font-size: var(--fs-xs);
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+        color: var(--color-ink-soft);
+      }
+      .map-table tr.group-row td {
+        background: var(--color-surface-2);
+        font-weight: var(--fw-bold);
+      }
+      .map-table code {
+        font-family: ui-monospace, "Cascadia Code", Consolas, monospace;
+        font-size: 13px;
+      }
+      .map-table td:first-child code {
+        color: var(--color-accent);
+        white-space: nowrap;
+      }
+      .map-table .gen {
+        color: var(--color-ink-muted);
+      }
+      .map-table .miss {
+        color: var(--color-accent);
+        font-weight: var(--fw-bold);
+      }
+      .map-summary {
+        margin-top: var(--space-3);
+        font-size: var(--fs-sm);
+        color: var(--color-ink-muted);
+      }
+      @media (max-width: 640px) {
+        .demo-compare {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+          gap: var(--space-3);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main class="demo container">
+      <div class="demo-bar">
+        <a href="index.html" class="logo">MÙA<span>.</span></a>
+        <label class="action-btn theme-toggle" title="Chế độ sáng/tối">
+          <input
+            type="checkbox"
+            id="theme-switch"
+            class="visually-hidden"
+            aria-label="Chế độ tối"
+            autocomplete="off"
+          />
+          <svg
+            class="icon-moon"
+            width="20"
+            height="20"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.8"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            aria-hidden="true"
+          >
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+          </svg>
+          <svg
+            class="icon-sun"
+            width="20"
+            height="20"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.8"
+            stroke-linecap="round"
+            aria-hidden="true"
+          >
+            <circle cx="12" cy="12" r="4"></circle>
+            <path
+              d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"
+            ></path>
+          </svg>
+        </label>
+      </div>
+
+      <h1 class="demo-title">Product card: Tailwind vs CSS thuần</h1>
+      <p class="demo-lead">
+        Cùng một card, dựng 2 cách. Tailwind được cấu hình để mọi màu, spacing,
+        bo góc và bóng đều trỏ về CSS variables của site — bật dark mode (nút
+        góc phải) hoặc đổi 1 biến trong style.css thì cả hai card đổi theo.
+      </p>
+
+      <div class="demo-compare">
+        <!-- ========== CARD TAILWIND ========== -->
+        <div>
+          <p class="demo-label">TAILWIND</p>
+          <article
+            id="tw-card"
+            class="group relative flex flex-col rounded-card bg-surface p-3 pb-5 shadow-card transition duration-300 ease-out hover:-translate-y-[3px] hover:shadow-card-hover focus-within:-translate-y-[3px] focus-within:shadow-card-hover"
+          >
+            <div
+              class="relative mb-4 flex aspect-[1/1.15] items-center justify-center overflow-hidden rounded-media bg-tone-beige"
+            >
+              <span
+                class="absolute left-3 top-3 rounded-pill bg-accent px-2.5 py-1 text-xs font-bold leading-tight text-on-accent"
+                >-17%</span
+              >
+              <button
+                type="button"
+                aria-label="Lưu sản phẩm"
+                class="absolute right-3 top-3 z-[2] flex h-[38px] w-[38px] -translate-y-1.5 items-center justify-center rounded-full bg-surface text-ink opacity-0 shadow-card transition duration-300 hover:text-accent group-hover:translate-y-0 group-hover:opacity-100 group-focus-within:translate-y-0 group-focus-within:opacity-100"
+              >
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+                </svg>
+              </button>
+              <svg
+                class="w-[45%] max-w-[108px] stroke-media-icon transition-transform duration-300 group-hover:scale-105"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke-width="2.2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                aria-hidden="true"
+              >
+                <path d="M20.38 3.46L16 2a4 4 0 01-8 0L3.62 3.46a2 2 0 00-1.34 2.23l.58 3.47a1 1 0 00.99.84H6v10c0 1.1.9 2 2 2h8a2 2 0 002-2V10h2.15a1 1 0 00.99-.84l.58-3.47a2 2 0 00-1.34-2.23z" />
+              </svg>
+              <span
+                class="pointer-events-none absolute bottom-4 left-4 text-xs font-extrabold tracking-wide text-media-label"
+                >ÁO THUN</span
+              >
+            </div>
+
+            <div class="flex flex-1 flex-col px-2">
+              <span class="mb-1 text-[11.5px] font-bold tracking-wide text-ink-muted">ÁO</span>
+              <h3 class="mb-1.5 text-base font-bold leading-snug">
+                <a
+                  href="product.html"
+                  class="transition-colors after:absolute after:inset-0 after:z-[1] after:rounded-card after:content-[''] group-hover:text-accent focus-visible:outline-none focus-visible:after:shadow-focus"
+                  >Áo thun cotton basic</a
+                >
+              </h3>
+              <div class="mb-2.5 flex items-center gap-1 text-[13px]">
+                <span class="text-[15px] leading-none tracking-[-1px] text-accent">★★★★★</span>
+                <span class="font-bold text-ink-soft">4.6</span>
+                <span class="text-ink-muted">(214)</span>
+              </div>
+              <p class="mb-4 flex flex-wrap items-baseline gap-x-2">
+                <span class="text-lg font-semibold">290.000₫</span>
+                <span class="text-sm text-ink-muted line-through">350.000₫</span>
+              </p>
+              <button
+                type="button"
+                class="relative z-[2] mt-auto inline-flex h-[44px] items-center justify-center gap-2 whitespace-nowrap rounded-pill bg-inverse px-3 text-sm font-semibold text-on-inverse transition hover:bg-accent hover:text-on-accent hover:shadow-accent focus-visible:shadow-focus focus-visible:outline-none active:scale-[0.98]"
+              >
+                <svg class="shrink-0" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <circle cx="9" cy="20" r="1"></circle>
+                  <circle cx="19" cy="20" r="1"></circle>
+                  <path d="M1 1h4l2.6 12.2a2 2 0 0 0 2 1.6h9.8a2 2 0 0 0 2-1.6L23 5H6"></path>
+                </svg>
+                <span>Thêm vào giỏ</span>
+              </button>
+            </div>
+          </article>
+        </div>
+
+        <!-- ========== CARD CSS THUẦN (style.css) ========== -->
+        <div>
+          <p class="demo-label">CSS THUẦN (style.css)</p>
+          <article class="product-card">
+            <div class="card-thumb bg-beige">
+              <span class="badge-discount">-17%</span>
+              <button type="button" class="wishlist-btn" aria-label="Lưu sản phẩm">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+                </svg>
+              </button>
+              <svg class="placeholder-icon" viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M20.38 3.46L16 2a4 4 0 01-8 0L3.62 3.46a2 2 0 00-1.34 2.23l.58 3.47a1 1 0 00.99.84H6v10c0 1.1.9 2 2 2h8a2 2 0 002-2V10h2.15a1 1 0 00.99-.84l.58-3.47a2 2 0 00-1.34-2.23z" />
+              </svg>
+              <span class="tag-overlay">ÁO THUN</span>
+            </div>
+            <div class="card-details">
+              <span class="product-cat">ÁO</span>
+              <h3 class="product-title"><a href="product.html">Áo thun cotton basic</a></h3>
+              <div class="rating-wrap">
+                <span class="stars">★★★★★</span>
+                <span class="rating-val">4.6</span>
+                <span class="rating-count">(214)</span>
+              </div>
+              <p class="price-wrap">
+                <span class="current-price">290.000₫</span>
+                <span class="old-price">350.000₫</span>
+              </p>
+              <button type="button" class="btn-add-cart">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <circle cx="9" cy="20" r="1"></circle>
+                  <circle cx="19" cy="20" r="1"></circle>
+                  <path d="M1 1h4l2.6 12.2a2 2 0 0 0 2 1.6h9.8a2 2 0 0 0 2-1.6L23 5H6"></path>
+                </svg>
+                <span>Thêm vào giỏ</span>
+              </button>
+            </div>
+          </article>
+        </div>
+      </div>
+
+      <h2 class="section-title">Bảng đối chiếu utility class → CSS</h2>
+      <p class="section-subtitle" style="margin-bottom: var(--space-5)">
+        Cột 2 viết tay; cột 3 đọc trực tiếp CSS mà Tailwind sinh ra trên trang
+        này để kiểm chứng.
+      </p>
+      <div class="map-wrap">
+        <table class="map-table">
+          <thead>
+            <tr>
+              <th>Utility class</th>
+              <th>Thuộc tính CSS tương ứng</th>
+              <th>CSS Tailwind thực sinh ra</th>
+            </tr>
+          </thead>
+          <tbody id="map-body"></tbody>
+        </table>
+      </div>
+      <p class="map-summary" id="map-summary"></p>
+    </main>
+
+    <script>
+      // [class, CSS tương ứng (viết tay)] — nhóm theo vai trò
+      var MAP = [
+        ["Layout & vị trí"],
+        ["group", "(không sinh CSS) — đánh dấu cha để con dùng group-hover:/group-focus-within:"],
+        ["relative", "position: relative"],
+        ["absolute", "position: absolute"],
+        ["flex", "display: flex"],
+        ["inline-flex", "display: inline-flex"],
+        ["flex-col", "flex-direction: column"],
+        ["flex-1", "flex: 1 1 0%"],
+        ["flex-wrap", "flex-wrap: wrap"],
+        ["shrink-0", "flex-shrink: 0"],
+        ["items-center", "align-items: center"],
+        ["items-baseline", "align-items: baseline"],
+        ["justify-center", "justify-content: center"],
+        ["mt-auto", "margin-top: auto"],
+        ["overflow-hidden", "overflow: hidden"],
+        ["aspect-[1/1.15]", "aspect-ratio: 1/1.15"],
+        ["top-3", "top: var(--space-3) → 12px"],
+        ["left-3", "left: var(--space-3) → 12px"],
+        ["right-3", "right: var(--space-3) → 12px"],
+        ["bottom-4", "bottom: var(--space-4) → 16px"],
+        ["left-4", "left: var(--space-4) → 16px"],
+        ["z-[2]", "z-index: 2"],
+        ["pointer-events-none", "pointer-events: none"],
+
+        ["Kích thước & spacing (trỏ về --space-*)"],
+        ["w-[38px]", "width: 38px"],
+        ["h-[38px]", "height: 38px"],
+        ["h-[44px]", "height: 44px"],
+        ["w-[45%]", "width: 45%"],
+        ["max-w-[108px]", "max-width: 108px"],
+        ["p-3", "padding: var(--space-3) → 12px"],
+        ["pb-5", "padding-bottom: var(--space-5) → 20px"],
+        ["px-2", "padding-left/right: var(--space-2) → 8px"],
+        ["px-2.5", "padding-left/right: var(--space-2-5) → 10px"],
+        ["px-3", "padding-left/right: var(--space-3) → 12px"],
+        ["py-1", "padding-top/bottom: var(--space-1) → 4px"],
+        ["mb-1", "margin-bottom: var(--space-1) → 4px"],
+        ["mb-1.5", "margin-bottom: var(--space-1-5) → 6px"],
+        ["mb-2.5", "margin-bottom: var(--space-2-5) → 10px"],
+        ["mb-4", "margin-bottom: var(--space-4) → 16px"],
+        ["gap-1", "gap: var(--space-1) → 4px"],
+        ["gap-2", "gap: var(--space-2) → 8px"],
+        ["gap-x-2", "column-gap: var(--space-2) → 8px"],
+
+        ["Màu (trỏ về --color-*)"],
+        ["bg-surface", "background-color: var(--color-surface)"],
+        ["bg-tone-beige", "background-color: var(--tone-beige)"],
+        ["bg-accent", "background-color: var(--color-accent)"],
+        ["bg-inverse", "background-color: var(--color-inverse)"],
+        ["text-ink", "color: var(--color-ink)"],
+        ["text-ink-soft", "color: var(--color-ink-soft)"],
+        ["text-ink-muted", "color: var(--color-ink-muted)"],
+        ["text-accent", "color: var(--color-accent)"],
+        ["text-on-accent", "color: var(--color-on-accent)"],
+        ["text-on-inverse", "color: var(--color-on-inverse)"],
+        ["text-media-label", "color: var(--color-media-label)"],
+        ["stroke-media-icon", "stroke: var(--color-media-icon)"],
+
+        ["Bo góc & bóng (trỏ về --radius-*, --shadow-*)"],
+        ["rounded-card", "border-radius: var(--radius-xl) → 28px"],
+        ["rounded-media", "border-radius: var(--radius-lg) → 24px"],
+        ["rounded-pill", "border-radius: var(--radius-pill)"],
+        ["rounded-full", "border-radius: 9999px"],
+        ["shadow-card", "box-shadow: var(--shadow-sm)"],
+        ["opacity-0", "opacity: 0"],
+
+        ["Chữ"],
+        ["text-xs", "font-size: var(--fs-xs) → 12px"],
+        ["text-sm", "font-size: var(--fs-sm) → 14px"],
+        ["text-base", "font-size: 1rem; line-height: 1.5rem"],
+        ["text-lg", "font-size: var(--fs-lg) → 17px"],
+        ["text-[11.5px]", "font-size: 11.5px"],
+        ["text-[13px]", "font-size: 13px"],
+        ["text-[15px]", "font-size: 15px"],
+        ["font-semibold", "font-weight: 600"],
+        ["font-bold", "font-weight: 700"],
+        ["font-extrabold", "font-weight: 800"],
+        ["leading-none", "line-height: 1"],
+        ["leading-tight", "line-height: 1.25"],
+        ["leading-snug", "line-height: 1.375"],
+        ["tracking-wide", "letter-spacing: 0.025em"],
+        ["tracking-[-1px]", "letter-spacing: -1px"],
+        ["whitespace-nowrap", "white-space: nowrap"],
+        ["line-through", "text-decoration-line: line-through"],
+
+        ["Hiệu ứng & chuyển động"],
+        ["transition", "transition-property: color, background-color, …, transform, box-shadow…; duration 150ms"],
+        ["transition-colors", "transition-property: color, background-color, border-color, …"],
+        ["transition-transform", "transition-property: transform"],
+        ["duration-300", "transition-duration: 300ms"],
+        ["ease-out", "transition-timing-function: cubic-bezier(0, 0, 0.2, 1)"],
+        ["-translate-y-1.5", "transform: translateY(calc(var(--space-1-5) * -1)) → -6px"],
+
+        ["Trạng thái (variant)"],
+        ["hover:-translate-y-[3px]", ":hover → transform: translateY(-3px)"],
+        ["hover:shadow-card-hover", ":hover → box-shadow: var(--shadow-md)"],
+        ["hover:text-accent", ":hover → color: var(--color-accent)"],
+        ["hover:bg-accent", ":hover → background-color: var(--color-accent)"],
+        ["hover:text-on-accent", ":hover → color: var(--color-on-accent)"],
+        ["hover:shadow-accent", ":hover → box-shadow: var(--shadow-accent)"],
+        ["focus-within:-translate-y-[3px]", ":focus-within → transform: translateY(-3px)"],
+        ["focus-within:shadow-card-hover", ":focus-within → box-shadow: var(--shadow-md)"],
+        ["focus-visible:outline-none", ":focus-visible → outline: 2px solid transparent"],
+        ["focus-visible:shadow-focus", ":focus-visible → box-shadow: var(--focus-ring)"],
+        ["active:scale-[0.98]", ":active → transform: scale(0.98)"],
+        ["group-hover:opacity-100", ".group:hover → opacity: 1"],
+        ["group-hover:translate-y-0", ".group:hover → transform: translateY(0)"],
+        ["group-hover:scale-105", ".group:hover → transform: scale(1.05)"],
+        ["group-hover:text-accent", ".group:hover → color: var(--color-accent)"],
+        ["group-focus-within:opacity-100", ".group:focus-within → opacity: 1"],
+        ["group-focus-within:translate-y-0", ".group:focus-within → transform: translateY(0)"],
+        ["after:content-['']", "::after → content: ''"],
+        ["after:absolute", "::after → position: absolute"],
+        ["after:inset-0", "::after → inset: 0px"],
+        ["after:z-[1]", "::after → z-index: 1"],
+        ["after:rounded-card", "::after → border-radius: var(--radius-xl)"],
+        ["focus-visible:after:shadow-focus", ":focus-visible::after → box-shadow: var(--focus-ring)"],
+      ];
+
+      function esc(s) {
+        return s.replace(/[&<>]/g, function (c) {
+          return { "&": "&amp;", "<": "&lt;", ">": "&gt;" }[c];
+        });
+      }
+
+      // Lấy các khai báo Tailwind thực sự sinh ra cho 1 class
+      function generated(cls) {
+        var needle = "." + CSS.escape(cls);
+        var out = [];
+        for (var i = 0; i < document.styleSheets.length; i++) {
+          var rules;
+          try {
+            rules = document.styleSheets[i].cssRules;
+          } catch (e) {
+            continue;
+          }
+          for (var j = 0; j < rules.length; j++) {
+            var r = rules[j];
+            if (!r.selectorText) continue;
+            var sels = r.selectorText.split(",");
+            for (var k = 0; k < sels.length; k++) {
+              var sel = sels[k].trim();
+              var idx = sel.indexOf(needle);
+              var next = sel.charAt(idx + needle.length);
+              if (idx !== -1 && !/[\w-]/.test(next)) {
+                out.push(r.style.cssText);
+                break;
+              }
+            }
+          }
+        }
+        return out.join(" ");
+      }
+
+      function render() {
+        var used = {};
+        document
+          .getElementById("tw-card")
+          .querySelectorAll("*")
+          .forEach(function (el) {
+            (el.getAttribute("class") || "").split(/\s+/).forEach(function (c) {
+              if (c) used[c] = true;
+            });
+          });
+        document.getElementById("tw-card").className.split(/\s+/).forEach(function (c) {
+          used[c] = true;
+        });
+
+        var rows = "",
+          ok = 0,
+          total = 0,
+          listed = {};
+        MAP.forEach(function (row) {
+          if (row.length === 1) {
+            rows += '<tr class="group-row"><td colspan="3">' + esc(row[0]) + "</td></tr>";
+            return;
+          }
+          var cls = row[0];
+          listed[cls] = true;
+          total++;
+          var gen = cls === "group" ? "—" : generated(cls);
+          if (gen || cls === "group") ok++;
+          rows +=
+            "<tr><td><code>" + esc(row[0]) + "</code></td><td><code>" + esc(row[1]) +
+            "</code></td><td>" +
+            (gen ? '<code class="gen">' + esc(gen) + "</code>" : '<span class="miss">không tìm thấy</span>') +
+            "</td></tr>";
+        });
+        document.getElementById("map-body").innerHTML = rows;
+
+        var unlisted = Object.keys(used).filter(function (c) {
+          return !listed[c];
+        });
+        document.getElementById("map-summary").textContent =
+          ok + "/" + total + " class có CSS do Tailwind sinh ra. " +
+          (unlisted.length ? "Class dùng trong card nhưng chưa có trong bảng: " + unlisted.join(", ") : "Mọi class dùng trong card đều có trong bảng.");
+        document.body.setAttribute("data-map-ok", ok + "/" + total + (unlisted.length ? " unlisted:" + unlisted.join(",") : ""));
+      }
+
+      // Play CDN sinh CSS bất đồng bộ → chờ đến khi có rule cho bg-surface
+      (function wait(n) {
+        if (generated("bg-surface") || n > 40) render();
+        else setTimeout(function () { wait(n + 1); }, 100);
+      })(0);
+    </script>
+  </body>
+</html>

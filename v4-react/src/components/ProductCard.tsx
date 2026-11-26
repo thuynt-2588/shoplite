@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom'
 import type { ProductSummary } from '../types'
 
 interface ProductCardProps {
@@ -6,31 +7,34 @@ interface ProductCardProps {
 }
 
 const formatPrice = (price: number) =>
-  new Intl.NumberFormat('vi-VN', {
+  new Intl.NumberFormat('en-US', {
     style: 'currency',
-    currency: 'VND',
-    maximumFractionDigits: 0,
+    currency: 'USD',
   }).format(price)
 
 const thumbnailTones = ['bg-[#d6cab8]', 'bg-[#be9e72]', 'bg-[#2e3038]']
 
 function ProductCard({ product, onAddToCart }: ProductCardProps) {
-  const oldPrice =
-    product.discountPercentage > 0
-      ? product.price / (1 - product.discountPercentage / 100)
-      : null
+  const discountedPrice =
+    product.price * (1 - product.discountPercentage / 100)
 
   return (
     <article className="group relative flex h-full flex-col rounded-[28px] bg-white p-3 pb-5 shadow-[0_2px_8px_rgba(21,21,27,0.06)] transition duration-300 hover:-translate-y-[3px] hover:shadow-[0_8px_24px_rgba(21,21,27,0.1)] focus-within:-translate-y-[3px] focus-within:shadow-[0_8px_24px_rgba(21,21,27,0.1)]">
       <div
         className={`relative mb-4 aspect-[1/1.15] overflow-hidden rounded-3xl ${thumbnailTones[product.id % thumbnailTones.length]}`}
       >
-        <img
-          src={product.thumbnail}
-          alt={product.title}
-          loading="lazy"
-          className="absolute inset-0 size-full object-cover transition duration-300 group-hover:scale-[1.04]"
-        />
+        <Link
+          to={`/products/${product.id}`}
+          aria-label={`Xem chi tiết ${product.title}`}
+          className="absolute inset-0"
+        >
+          <img
+            src={product.thumbnail}
+            alt=""
+            loading="lazy"
+            className="size-full object-cover transition duration-300 group-hover:scale-[1.04]"
+          />
+        </Link>
         {product.discountPercentage > 0 && (
           <span className="absolute left-3 top-3 rounded-full bg-[#ff4438] px-2.5 py-1 text-xs font-bold leading-tight text-white">
             -{Math.round(product.discountPercentage)}%
@@ -43,7 +47,9 @@ function ProductCard({ product, onAddToCart }: ProductCardProps) {
           {product.category}
         </p>
         <h3 className="mb-1.5 line-clamp-2 text-base font-bold leading-[1.35] tracking-[-0.02em] text-[#15151b] transition-colors group-hover:text-[#ff4438]">
-          {product.title}
+          <Link to={`/products/${product.id}`} className="focus-visible:outline-none">
+            {product.title}
+          </Link>
         </h3>
 
         <div className="mb-2.5 flex items-center gap-1 text-[13px]">
@@ -56,10 +62,12 @@ function ProductCard({ product, onAddToCart }: ProductCardProps) {
 
         <div className="mb-4 flex flex-wrap items-baseline gap-x-2">
           <p className="text-[17px] font-semibold tracking-[-0.01em] text-[#15151b]">
-            {formatPrice(product.price)}
+            {formatPrice(discountedPrice)}
           </p>
-          {oldPrice !== null && (
-            <p className="text-sm text-[#6f6f79] line-through">{formatPrice(oldPrice)}</p>
+          {product.discountPercentage > 0 && (
+            <p className="text-sm text-[#6f6f79] line-through">
+              {formatPrice(product.price)}
+            </p>
           )}
         </div>
 

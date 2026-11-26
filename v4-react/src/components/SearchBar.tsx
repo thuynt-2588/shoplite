@@ -5,7 +5,7 @@ interface SearchBarProps {
 
 function SearchBar({ value, onChange }: SearchBarProps) {
   return (
-    <label className="order-3 relative w-full lg:order-none lg:ml-auto lg:max-w-[420px]">
+    <label className="relative block w-full">
       <svg
         aria-hidden="true"
         className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-[#6f6f79]"

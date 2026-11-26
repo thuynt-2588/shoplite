@@ -3,8 +3,8 @@ import ContactForm from './components/ContactForm'
 import Header from './components/Header'
 import LoginForm from './components/LoginForm'
 import ProductList from './components/ProductList'
-import { products } from './data'
-import type { CartItem } from './types'
+import { useProducts } from './hooks/useProducts'
+import type { CartItem, ProductSummary } from './types'
 
 type SortOption = 'popular' | 'newest' | 'price-asc' | 'price-desc' | 'rating'
 
@@ -16,15 +16,28 @@ const sortOptions: { value: SortOption; label: string }[] = [
   { value: 'rating', label: 'Đánh giá cao' },
 ]
 
+const EMPTY_PRODUCTS: ProductSummary[] = []
+const PRODUCTS_PER_BATCH = 8
+
 function App() {
   const [searchQuery, setSearchQuery] = useState('')
   const [selectedCategory, setSelectedCategory] = useState('all')
   const [sortOption, setSortOption] = useState<SortOption>('popular')
+  const [visibleProductCount, setVisibleProductCount] = useState(PRODUCTS_PER_BATCH)
+  // Temporary client state; product data is server state managed by useProducts.
   const [cart, setCart] = useState<CartItem[]>([])
+  const {
+    data: fetchedProducts,
+    isLoading,
+    isError,
+    error,
+    refetch,
+  } = useProducts()
+  const products = fetchedProducts ?? EMPTY_PRODUCTS
 
   const categories = useMemo(
     () => [...new Set(products.map((product) => product.category))],
-    [],
+    [products],
   )
   const cartCount = cart.reduce((total, item) => total + item.quantity, 0)
 
@@ -52,9 +65,25 @@ function App() {
       default:
         return visibleProducts
     }
-  }, [searchQuery, selectedCategory, sortOption])
+  }, [products, searchQuery, selectedCategory, sortOption])
+  const visibleProducts = filteredProducts.slice(0, visibleProductCount)
+  const remainingProductCount = filteredProducts.length - visibleProducts.length
 
-  const addToCart = (product: (typeof products)[number]) => {
+  const resetVisibleProducts = () => {
+    setVisibleProductCount(PRODUCTS_PER_BATCH)
+  }
+
+  const handleSearchChange = (query: string) => {
+    setSearchQuery(query)
+    resetVisibleProducts()
+  }
+
+  const handleCategoryChange = (category: string) => {
+    setSelectedCategory(category)
+    resetVisibleProducts()
+  }
+
+  const addToCart = (product: ProductSummary) => {
     setCart((currentCart) => {
       const existingItem = currentCart.some((item) => item.id === product.id)
 
@@ -82,11 +111,8 @@ function App() {
     <div id="top" className="min-h-screen bg-[#f7f5f0] text-[#15151b]">
       <Header
         cartCount={cartCount}
-        categories={categories}
-        selectedCategory={selectedCategory}
         searchQuery={searchQuery}
-        onCategoryChange={setSelectedCategory}
-        onSearchChange={setSearchQuery}
+        onSearchChange={handleSearchChange}
       />
 
       <main className="mx-auto w-full max-w-[1320px] px-4 pb-4 pt-6 sm:px-6 sm:pt-8 lg:px-7">
@@ -133,23 +159,23 @@ function App() {
 
         <div
           id="products-catalog"
-          className="grid items-start gap-6 pb-8 lg:grid-cols-[248px_minmax(0,1fr)] lg:gap-8"
+          className="grid grid-cols-1 items-start gap-6 pb-8 xl:grid-cols-[248px_minmax(0,1fr)] xl:gap-8"
         >
           <aside aria-label="Danh mục và bộ lọc" className="flex flex-col gap-6">
             <section>
               <h2 className="mb-3 text-[13px] font-bold uppercase tracking-[0.06em] text-[#6f6f79]">
                 Danh mục
               </h2>
-              <ul className="flex gap-2 overflow-x-auto pb-1 lg:flex-col lg:overflow-visible">
+              <ul className="flex gap-2 overflow-x-auto pb-1 xl:flex-col xl:overflow-visible">
                 <li className="shrink-0">
                   <button
                     type="button"
                     aria-pressed={selectedCategory === 'all'}
-                    onClick={() => setSelectedCategory('all')}
-                    className={`flex w-full items-center justify-between gap-5 rounded-xl border px-3.5 py-2 text-sm font-semibold transition lg:border-transparent ${
+                    onClick={() => handleCategoryChange('all')}
+                    className={`flex w-full items-center justify-between gap-5 rounded-xl border px-3.5 py-2 text-sm font-semibold transition xl:border-transparent ${
                       selectedCategory === 'all'
-                        ? 'border-[#15151b] bg-[#15151b] text-white lg:bg-[#15151b]'
-                        : 'border-[#e9e7e1] bg-white text-[#45454f] hover:bg-[#efece4] lg:bg-transparent'
+                        ? 'border-[#15151b] bg-[#15151b] text-white xl:bg-[#15151b]'
+                        : 'border-[#e9e7e1] bg-white text-[#45454f] hover:bg-[#efece4] xl:bg-transparent'
                     }`}
                   >
                     <span>Tất cả</span>
@@ -171,11 +197,11 @@ function App() {
                       <button
                         type="button"
                         aria-pressed={active}
-                        onClick={() => setSelectedCategory(category)}
-                        className={`flex w-full items-center justify-between gap-5 rounded-xl border px-3.5 py-2 text-sm font-semibold transition lg:border-transparent ${
+                        onClick={() => handleCategoryChange(category)}
+                        className={`flex w-full items-center justify-between gap-5 rounded-xl border px-3.5 py-2 text-sm font-semibold transition xl:border-transparent ${
                           active
                             ? 'border-[#15151b] bg-[#15151b] text-white'
-                            : 'border-[#e9e7e1] bg-white text-[#45454f] hover:bg-[#efece4] lg:bg-transparent'
+                            : 'border-[#e9e7e1] bg-white text-[#45454f] hover:bg-[#efece4] xl:bg-transparent'
                         }`}
                       >
                         <span>{category}</span>
@@ -193,7 +219,7 @@ function App() {
               <h2 className="mb-3 text-[13px] font-bold uppercase tracking-[0.06em] text-[#6f6f79]">
                 Ưu đãi
               </h2>
-              <ul className="flex flex-wrap gap-3 lg:flex-col">
+              <ul className="flex flex-wrap gap-3 xl:flex-col">
                 <li className="flex items-center gap-2 text-sm font-medium text-[#45454f]">
                   <span className="rounded-full bg-[#ff4438] px-2.5 py-1 text-[11px] font-extrabold tracking-[0.04em] text-white">
                     SALE
@@ -221,10 +247,13 @@ function App() {
             </section>
           </aside>
 
-          <section aria-label="Danh sách sản phẩm">
+          <section aria-label="Danh sách sản phẩm" className="min-w-0">
             <header className="mb-5 flex flex-wrap items-center justify-between gap-3">
               <p aria-live="polite" className="text-sm text-[#45454f]">
-                <strong className="text-[#15151b]">{filteredProducts.length}</strong> sản phẩm
+                <strong className="text-[#15151b]">
+                  {isLoading ? '…' : isError ? '—' : filteredProducts.length}
+                </strong>{' '}
+                sản phẩm
               </p>
               <label className="flex h-11 items-center gap-2 rounded-xl border-[1.5px] border-[#e9e7e1] bg-white px-3.5 text-[#15151b] transition hover:border-[#d9d6cd] focus-within:border-[#ff4438] focus-within:ring-4 focus-within:ring-[#ffe9e6]">
                 <svg
@@ -245,7 +274,10 @@ function App() {
                     const selectedOption = sortOptions.find(
                       (option) => option.value === event.target.value,
                     )
-                    if (selectedOption) setSortOption(selectedOption.value)
+                    if (selectedOption) {
+                      setSortOption(selectedOption.value)
+                      resetVisibleProducts()
+                    }
                   }}
                   className="cursor-pointer bg-transparent text-sm outline-none"
                 >
@@ -257,7 +289,61 @@ function App() {
                 </select>
               </label>
             </header>
-            <ProductList products={filteredProducts} onAddToCart={addToCart} />
+            {isLoading ? (
+              <div
+                role="status"
+                aria-label="Đang tải sản phẩm"
+                className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4"
+              >
+                {Array.from({ length: 8 }, (_, index) => (
+                  <div
+                    key={index}
+                    aria-hidden="true"
+                    className="animate-pulse rounded-[28px] bg-white p-3 pb-5 shadow-[0_2px_8px_rgba(21,21,27,0.06)]"
+                  >
+                    <div className="mb-4 aspect-[1/1.15] rounded-3xl bg-[#efece4]" />
+                    <div className="mb-3 h-3 w-1/3 rounded bg-[#efece4]" />
+                    <div className="mb-2 h-4 rounded bg-[#efece4]" />
+                    <div className="mb-4 h-4 w-1/2 rounded bg-[#efece4]" />
+                    <div className="h-11 rounded-full bg-[#efece4]" />
+                  </div>
+                ))}
+              </div>
+            ) : isError ? (
+              <div
+                role="alert"
+                className="rounded-2xl border border-dashed border-[#d9d6cd] bg-white px-6 py-10 text-center"
+              >
+                <p className="text-sm text-[#45454f]">{error.message}</p>
+                <button
+                  type="button"
+                  onClick={() => void refetch()}
+                  className="mt-4 rounded-full bg-[#15151b] px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-[#ff4438] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#ff4438]"
+                >
+                  Thử lại
+                </button>
+              </div>
+            ) : (
+              <>
+                <ProductList products={visibleProducts} onAddToCart={addToCart} />
+                {remainingProductCount > 0 && (
+                  <div className="mt-7 flex justify-center sm:mt-9">
+                    <button
+                      type="button"
+                      onClick={() =>
+                        setVisibleProductCount((count) =>
+                          Math.min(count + PRODUCTS_PER_BATCH, filteredProducts.length),
+                        )
+                      }
+                      className="w-full rounded-full border-[1.5px] border-[#d9d6cd] px-7 py-3 text-base font-semibold text-[#15151b] transition hover:border-[#15151b] hover:bg-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#ff4438] sm:w-auto"
+                    >
+                      Tải thêm sản phẩm{' '}
+                      <span className="text-[#9c9ba6]">({remainingProductCount})</span>
+                    </button>
+                  </div>
+                )}
+              </>
+            )}
           </section>
         </div>
       </main>

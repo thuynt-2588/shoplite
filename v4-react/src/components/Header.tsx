@@ -1,69 +1,137 @@
+import SearchBar from './SearchBar'
+
 interface HeaderProps {
   cartCount: number
+  categories: string[]
+  selectedCategory: string
   searchQuery: string
+  onCategoryChange: (category: string) => void
   onSearchChange: (value: string) => void
 }
 
-function Header({ cartCount, searchQuery, onSearchChange }: HeaderProps) {
+function Header({
+  cartCount,
+  categories,
+  selectedCategory,
+  searchQuery,
+  onCategoryChange,
+  onSearchChange,
+}: HeaderProps) {
   return (
-    <header className="border-b border-slate-200 bg-white">
-      <div className="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-4 px-4 py-4 sm:px-6 lg:flex-nowrap lg:px-8">
-        <a
-          href="/"
-          aria-label="ShopLite - Trang chủ"
-          className="flex shrink-0 items-center gap-2 text-xl font-extrabold tracking-tight text-slate-900"
-        >
-          <span className="grid size-9 place-items-center rounded-xl bg-indigo-600 text-lg text-white">
-            S
-          </span>
-          ShopLite
-        </a>
-
-        <label className="order-3 flex w-full items-center gap-3 rounded-xl border border-slate-200 bg-slate-50 px-4 py-2.5 text-slate-400 transition focus-within:border-indigo-400 focus-within:ring-2 focus-within:ring-indigo-100 lg:order-none lg:mx-8 lg:max-w-xl">
-          <svg
-            aria-hidden="true"
-            className="size-5 shrink-0"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="1.8"
+    <header className="sticky top-0 z-20 border-b border-[#e9e7e1] bg-white">
+      <div className="mx-auto flex max-w-[1320px] flex-wrap items-center gap-x-7 gap-y-2 px-4 py-3 sm:px-6 lg:flex-nowrap lg:px-7">
+        <div className="flex min-w-0 items-center gap-5">
+          <a
+            href="#top"
+            aria-label="MÙA - Trang chủ"
+            className="shrink-0 text-[26px] font-extrabold tracking-[-0.03em] text-[#15151b]"
           >
-            <circle cx="11" cy="11" r="7" />
-            <path d="m20 20-4-4" strokeLinecap="round" />
-          </svg>
-          <input
-            type="search"
-            value={searchQuery}
-            onChange={(event) => onSearchChange(event.target.value)}
-            placeholder="Tìm kiếm sản phẩm..."
-            aria-label="Tìm kiếm sản phẩm"
-            className="w-full bg-transparent text-sm text-slate-900 outline-none placeholder:text-slate-400"
-          />
-        </label>
+            MÙA<span className="ml-0.5 text-[#ff4438]">.</span>
+          </a>
+          <nav aria-label="Điều hướng chính" className="hidden min-w-0 xl:block">
+            <ul className="flex items-center gap-1">
+              <li>
+                <button
+                  type="button"
+                  aria-pressed={selectedCategory === 'all'}
+                  onClick={() => onCategoryChange('all')}
+                  className={`whitespace-nowrap rounded-full px-3.5 py-2 text-sm font-semibold transition ${
+                    selectedCategory === 'all'
+                      ? 'bg-[#efece4] text-[#15151b]'
+                      : 'text-[#45454f] hover:bg-[#f7f5f0] hover:text-[#15151b]'
+                  }`}
+                >
+                  Cửa hàng
+                </button>
+              </li>
+              {categories.map((category) => (
+                <li key={category}>
+                  <button
+                    type="button"
+                    aria-pressed={selectedCategory === category}
+                    onClick={() => onCategoryChange(category)}
+                    className={`whitespace-nowrap rounded-full px-3.5 py-2 text-sm font-semibold transition ${
+                      selectedCategory === category
+                        ? 'bg-[#efece4] text-[#15151b]'
+                        : 'text-[#45454f] hover:bg-[#f7f5f0] hover:text-[#15151b]'
+                    }`}
+                  >
+                    {category}
+                  </button>
+                </li>
+              ))}
+            </ul>
+          </nav>
+        </div>
 
-        <button
-          type="button"
-          aria-label={`Giỏ hàng, ${cartCount} sản phẩm`}
-          className="relative grid size-11 shrink-0 place-items-center rounded-xl border border-slate-200 text-slate-700 transition hover:border-indigo-200 hover:bg-indigo-50 hover:text-indigo-700"
-        >
-          <svg
-            aria-hidden="true"
-            className="size-5"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="1.8"
-            strokeLinecap="round"
-            strokeLinejoin="round"
+        <SearchBar value={searchQuery} onChange={onSearchChange} />
+
+        <div className="ml-auto flex shrink-0 items-center gap-1">
+          <button
+            type="button"
+            aria-label={`Giỏ hàng${cartCount > 0 ? `, ${cartCount} sản phẩm` : ''}`}
+            className="relative grid size-11 place-items-center rounded-full text-[#15151b] transition hover:bg-[#efece4] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#ff4438]"
           >
-            <path d="M3 3h2l2.4 12.2a2 2 0 0 0 2 1.6h8.8a2 2 0 0 0 1.9-1.4L22 8H6" />
-            <circle cx="10" cy="20" r="1" />
-            <circle cx="18" cy="20" r="1" />
-          </svg>
-          <span className="absolute -right-1.5 -top-1.5 grid min-h-5 min-w-5 place-items-center rounded-full bg-indigo-600 px-1 text-[11px] font-bold text-white">
-            {cartCount}
-          </span>
-        </button>
+            <svg
+              aria-hidden="true"
+              width="22"
+              height="22"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1.8"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <circle cx="9" cy="21" r="1" />
+              <circle cx="20" cy="21" r="1" />
+              <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6" />
+            </svg>
+            {cartCount > 0 && (
+              <span className="absolute right-0 top-0 grid min-h-[18px] min-w-[18px] place-items-center rounded-full bg-[#ff4438] px-1 text-[11px] font-bold leading-none text-white ring-2 ring-white">
+                {cartCount}
+              </span>
+            )}
+          </button>
+        </div>
+
+        <nav
+          aria-label="Danh mục sản phẩm"
+          className="order-last -mx-4 w-[calc(100%+2rem)] overflow-x-auto sm:-mx-6 sm:w-[calc(100%+3rem)] xl:hidden"
+        >
+          <ul className="flex w-max items-center gap-1 px-4 pb-0.5 sm:px-6">
+            <li>
+              <button
+                type="button"
+                aria-pressed={selectedCategory === 'all'}
+                onClick={() => onCategoryChange('all')}
+                className={`whitespace-nowrap rounded-full px-3 py-1.5 text-sm font-semibold ${
+                  selectedCategory === 'all'
+                    ? 'bg-[#15151b] text-white'
+                    : 'text-[#45454f] hover:bg-[#efece4]'
+                }`}
+              >
+                Cửa hàng
+              </button>
+            </li>
+            {categories.map((category) => (
+              <li key={category}>
+                <button
+                  type="button"
+                  aria-pressed={selectedCategory === category}
+                  onClick={() => onCategoryChange(category)}
+                  className={`whitespace-nowrap rounded-full px-3 py-1.5 text-sm font-semibold ${
+                    selectedCategory === category
+                      ? 'bg-[#15151b] text-white'
+                      : 'text-[#45454f] hover:bg-[#efece4]'
+                  }`}
+                >
+                  {category}
+                </button>
+              </li>
+            ))}
+          </ul>
+        </nav>
       </div>
     </header>
   )

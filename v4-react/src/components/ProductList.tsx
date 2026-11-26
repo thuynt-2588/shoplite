@@ -3,13 +3,13 @@ import ProductCard from './ProductCard'
 
 interface ProductListProps {
   products: ProductSummary[]
-  onAddToCart: () => void
+  onAddToCart: (product: ProductSummary) => void
 }
 
 function ProductList({ products, onAddToCart }: ProductListProps) {
   if (products.length === 0) {
     return (
-      <p className="rounded-2xl border border-dashed border-slate-300 bg-white px-6 py-12 text-center text-sm text-slate-500">
+      <p className="col-span-full rounded-2xl border border-dashed border-[#d9d6cd] bg-white px-6 py-12 text-center text-sm text-[#45454f]">
         Không tìm thấy sản phẩm phù hợp.
       </p>
     )

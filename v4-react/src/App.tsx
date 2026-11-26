@@ -1,5 +1,7 @@
 import { useMemo, useState } from 'react'
+import ContactForm from './components/ContactForm'
 import Header from './components/Header'
+import LoginForm from './components/LoginForm'
 import ProductList from './components/ProductList'
 import { products } from './data'
 import type { CartItem } from './types'
@@ -87,7 +89,7 @@ function App() {
         onSearchChange={setSearchQuery}
       />
 
-      <main className="mx-auto w-full max-w-[1320px] px-4 pb-20 pt-6 sm:px-6 sm:pt-8 lg:px-7">
+      <main className="mx-auto w-full max-w-[1320px] px-4 pb-4 pt-6 sm:px-6 sm:pt-8 lg:px-7">
         <section
           aria-label="Bộ sưu tập hè 2026"
           className="relative isolate mb-8 flex min-h-[340px] overflow-hidden rounded-[24px] bg-[linear-gradient(120deg,#15151b_0%,#2a2a33_55%,#ff4438_220%)] sm:mb-10"
@@ -131,7 +133,7 @@ function App() {
 
         <div
           id="products-catalog"
-          className="grid items-start gap-6 pb-12 lg:grid-cols-[248px_minmax(0,1fr)] lg:gap-8"
+          className="grid items-start gap-6 pb-8 lg:grid-cols-[248px_minmax(0,1fr)] lg:gap-8"
         >
           <aside aria-label="Danh mục và bộ lọc" className="flex flex-col gap-6">
             <section>
@@ -259,6 +261,14 @@ function App() {
           </section>
         </div>
       </main>
+
+      <section
+        aria-label="Đăng nhập và liên hệ"
+        className="mx-auto grid max-w-[1320px] gap-6 px-4 pb-16 sm:px-6 lg:grid-cols-2 lg:px-7"
+      >
+        <LoginForm />
+        <ContactForm />
+      </section>
 
       <footer className="bg-[#15151b] px-4 py-10 text-white/70 sm:px-6 sm:py-12 lg:px-7">
         <div className="mx-auto max-w-[1320px]">
